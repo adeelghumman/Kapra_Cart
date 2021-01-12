@@ -1,6 +1,6 @@
 class roleOfUser {
   String currentRoleOfUser;
-  String asa;
+  String ghumman;
 
   roleOfUser(String currentRoleOfUser) {
     this.currentRoleOfUser = currentRoleOfUser;
