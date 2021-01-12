@@ -8,10 +8,22 @@ class buyerRegiterScreen extends StatefulWidget {
 class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: layout(),
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage("Asset/register.png"),
+        fit: BoxFit.fill,
+      )),
     );
   }
 
-  layout() {}
+  layout() {
+    return Container(
+      color: Colors.white,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: <Widget>[],
+      ),
+    );
+  }
 }

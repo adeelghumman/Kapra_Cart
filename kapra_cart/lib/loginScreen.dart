@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/BuyerDashboard/buyerRegister.dart';
 import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
 
 class loginScreen extends StatefulWidget {
@@ -49,19 +50,23 @@ class _loginScreenState extends State<loginScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 30.0, vertical: 10),
-                  child: Container(
-                    width: 300,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Center(
-                      child: Text("Login",
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )),
+                  child: Material(
+                    elevation: 20,
+                    borderRadius: BorderRadius.circular(50),
+                    child: Container(
+                      width: 300,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Center(
+                        child: Text("Login",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )),
+                      ),
                     ),
                   ),
                 ),
@@ -76,20 +81,33 @@ class _loginScreenState extends State<loginScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 30.0, vertical: 10),
                   child: Material(
-                    elevation: 200,
-                    child: Container(
-                      width: 300,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Center(
-                        child: Text("Register",
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            )),
+                    elevation: 20,
+                    borderRadius: BorderRadius.circular(50),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (widget.userRole.currentRoleOfUser == "Buyer") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => buyerRegiterScreen(),
+                              ));
+                        }
+                        ;
+                      },
+                      child: Container(
+                        width: 300,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Center(
+                          child: Text("Register",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              )),
+                        ),
                       ),
                     ),
                   ),
