@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/BuyerDashboard/buyerHomePage.dart';
 import 'package:kapra_cart/BuyerDashboard/buyerRegister.dart';
 import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
+import 'package:kapra_cart/constant.dart';
 
 class loginScreen extends StatefulWidget {
   roleOfUser userRole;
@@ -53,19 +55,28 @@ class _loginScreenState extends State<loginScreen> {
                   child: Material(
                     elevation: 20,
                     borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                      width: 300,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Center(
-                        child: Text("Login",
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            )),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => buyerHomePage(),
+                            ));
+                      },
+                      child: Container(
+                        width: 300,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: buttonColor,
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Center(
+                          child: Text("Login",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              )),
+                        ),
                       ),
                     ),
                   ),
@@ -92,13 +103,12 @@ class _loginScreenState extends State<loginScreen> {
                                 builder: (context) => buyerRegiterScreen(),
                               ));
                         }
-                        ;
                       },
                       child: Container(
                         width: 300,
                         height: 50,
                         decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: buttonColor,
                             borderRadius: BorderRadius.circular(50)),
                         child: Center(
                           child: Text("Register",

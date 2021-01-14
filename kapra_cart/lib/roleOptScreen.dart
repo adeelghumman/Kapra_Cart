@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
+import 'package:kapra_cart/constant.dart';
 
 import 'loginScreen.dart';
 
@@ -20,7 +21,7 @@ class _roleOptScreenState extends State<roleOptScreen> {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           image: DecorationImage(
-        image: AssetImage("Asset/5.jpg"),
+        image: AssetImage("Asset/register.png"),
         fit: BoxFit.fill,
       )),
       child: Scaffold(
@@ -60,19 +61,23 @@ class _roleOptScreenState extends State<roleOptScreen> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.blue[300],
-                    borderRadius: BorderRadius.circular(50)),
-                height: 80,
-                width: 180,
-                child: Center(
-                  child: Text(role,
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      )),
+              child: Material(
+                elevation: 20,
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: buttonColor,
+                      borderRadius: BorderRadius.circular(50)),
+                  height: 60,
+                  width: 280,
+                  child: Center(
+                    child: Text(role,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )),
+                  ),
                 ),
               ),
             )

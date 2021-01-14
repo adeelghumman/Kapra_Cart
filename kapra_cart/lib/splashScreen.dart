@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/constant.dart';
 
 class splachScreen extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class _splachScreenState extends State<splachScreen> {
       clipper: myclipper(),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        color: Colors.blue,
+        color: buttonColor,
         height: MediaQuery.of(context).size.height,
         child: Center(
           child: Text(
