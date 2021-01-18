@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/BuyerDashboard/buyerHomePage.dart';
 import 'package:kapra_cart/BuyerDashboard/buyerRegister.dart';
+import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
 import 'package:kapra_cart/constant.dart';
+import 'package:http/http.dart' as http;
 
 class loginScreen extends StatefulWidget {
   roleOfUser userRole;
@@ -12,9 +16,12 @@ class loginScreen extends StatefulWidget {
 }
 
 class _loginScreenState extends State<loginScreen> {
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: layout());
+    return Scaffold(key: _scaffoldkey, body: layout());
   }
 
   layout() {
@@ -39,11 +46,13 @@ class _loginScreenState extends State<loginScreen> {
                       )),
                 ),
                 TextField(
+                  controller: email,
                   decoration: InputDecoration(
                       hintText: "Email",
                       hintStyle: TextStyle(color: Colors.grey)),
                 ),
                 TextField(
+                  controller: password,
                   obscureText: true,
                   decoration: InputDecoration(
                       hintText: "Password",
@@ -57,11 +66,9 @@ class _loginScreenState extends State<loginScreen> {
                     borderRadius: BorderRadius.circular(50),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => buyerHomePage(),
-                            ));
+                        if (widget.userRole.currentRoleOfUser == "Buyer") {
+                          login();
+                        }
                       },
                       child: Container(
                         width: 300,
@@ -128,5 +135,24 @@ class _loginScreenState extends State<loginScreen> {
         ],
       ),
     );
+  }
+
+  void login() async {
+    var response = await http.post(
+        "http://10.0.2.2/KapraCartScript/checkBuyer.php",
+        body: {'email': email.text, 'password': password.text});
+    loginUserModelClass user =
+        loginUserModelClass.fromjson(jsonDecode(response.body));
+    print(user.message);
+    if (user.message == "true") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => buyerHomePage(),
+          ));
+    } else {
+      _scaffoldkey.currentState
+          .showSnackBar(SnackBar(content: Text("User Not Found")));
+    }
   }
 }

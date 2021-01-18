@@ -5,21 +5,29 @@ import 'package:kapra_cart/Shops/serviceShops.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customAppbar.dart';
 
+import '../customDrawer.dart';
+
 class buyerHomePage extends StatefulWidget {
   @override
   _buyerHomePageState createState() => _buyerHomePageState();
 }
 
 class _buyerHomePageState extends State<buyerHomePage> {
+  GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: customAppbar(
+        height: 80,
+        ontap: () {
+          _scaffoldkey.currentState.openDrawer();
+        },
+      ),
+      drawer: customDrawer(),
+      key: _scaffoldkey,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              child: customAppbar(),
-            ),
             homepageSlider(),
             choiceContainer(),
             shopListingSlider(),
@@ -32,26 +40,35 @@ class _buyerHomePageState extends State<buyerHomePage> {
 
   //////////////////////////////////////////////////// below this Methods are Define
   homepageSlider() {
-    return SizedBox(
-      height: 200,
-      width: MediaQuery.of(context).size.width,
-      child: Carousel(
-        dotSize: 3,
-        dotSpacing: 8,
-        indicatorBgPadding: 5,
-        dotBgColor: Colors.transparent,
-        images: [
-          AssetImage("Asset/homepageSlider1.jpg"),
-          AssetImage("Asset/homepageSlider2.jpg"),
-          AssetImage("Asset/homepageSlider3.jpg"),
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+      child: SizedBox(
+        height: 200,
+        width: MediaQuery.of(context).size.width,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Carousel(
+            boxFit: BoxFit.fill,
+            dotSize: 3,
+            dotSpacing: 8,
+            indicatorBgPadding: 5,
+            dotBgColor: Colors.transparent,
+            images: [
+              AssetImage("Asset/homepageSlider1.jpg"),
+              AssetImage("Asset/homepageSlider2.jpg"),
+              AssetImage("Asset/homepageSlider3.jpg"),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   choiceContainer() {
     return Container(
-      color: appbarColor,
+      //color: appbarColor,
       height: 170,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
