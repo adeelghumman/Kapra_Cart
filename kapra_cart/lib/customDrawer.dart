@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/constant.dart';
+import 'package:kapra_cart/loginScreen.dart';
+import 'package:kapra_cart/varable.dart';
 
 class customDrawer extends StatefulWidget {
   @override
@@ -8,75 +11,67 @@ class customDrawer extends StatefulWidget {
 class _customDrawerState extends State<customDrawer> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //color: Colors.white,
-      body: Column(
+    return Drawer(
+      child: Column(
         children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.85,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("Asset/homepageSlider1.jpg"),
-                        fit: BoxFit.cover)),
-                child: Text("Header"),
-              ),
+          Container(
+            color: buttonColor,
+            height: MediaQuery.of(context).size.height / 2 - 150,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      color: appbarColor,
+                      borderRadius: BorderRadius.circular(50)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("UserName",
+                      style: TextStyle(
+                        fontSize: 20,
+                        //fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                ),
+                Text("Email address",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ))
+              ],
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: ListView(children: [
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ]),
+          ListTile(
+            leading: Text("Your Profile"),
+            trailing: Icon(Icons.supervised_user_circle),
+          ),
+          ListTile(
+            leading: Text("Your Profile"),
+            trailing: Icon(Icons.supervised_user_circle),
+          ),
+          ListTile(
+            leading: Text("Your Profile"),
+            trailing: Icon(Icons.supervised_user_circle),
+          ),
+          ListTile(
+            leading: Text("Your Profile"),
+            trailing: Icon(Icons.supervised_user_circle),
+          ),
+          ListTile(
+            onTap: () {
+              constants.sharedPreferences.clear();
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => loginScreen(),
+                  ));
+            },
+            leading: Text("Sign out"),
+            trailing: Icon(Icons.supervised_user_circle),
           )
         ],
       ),

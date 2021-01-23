@@ -5,7 +5,8 @@ class customAppbar extends StatefulWidget with PreferredSizeWidget {
   final VoidCallback ontap;
   final double height;
 
-  const customAppbar({Key key, this.ontap, this.height}) : super(key: key);
+  const customAppbar({Key key, this.ontap, @required this.height})
+      : super(key: key);
   @override
   _customAppbarState createState() => _customAppbarState();
 

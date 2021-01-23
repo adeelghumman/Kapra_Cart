@@ -7,6 +7,7 @@ import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:http/http.dart' as http;
+import 'package:kapra_cart/varable.dart';
 
 class loginScreen extends StatefulWidget {
   roleOfUser userRole;
@@ -145,6 +146,8 @@ class _loginScreenState extends State<loginScreen> {
         loginUserModelClass.fromjson(jsonDecode(response.body));
     print(user.message);
     if (user.message == "true") {
+      constants.sharedPreferences.setBool('login', true);
+      // print(constants.sharedPreferences.setBool('login', true));
       Navigator.push(
           context,
           MaterialPageRoute(
