@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customAppbar.dart';
 import 'package:kapra_cart/customDrawer.dart';
@@ -7,6 +8,8 @@ import 'dart:ui';
 import 'backgroundCurveLayout.dart';
 
 class productShop extends StatefulWidget {
+  loginUserModelClass userDetails;
+  productShop({this.userDetails});
   @override
   _productShopState createState() => _productShopState();
 }
@@ -22,7 +25,9 @@ class _productShopState extends State<productShop> {
         ),
         Scaffold(
           key: _scaffoldState,
-          drawer: customDrawer(),
+          drawer: customDrawer(
+            userDetails: widget.userDetails,
+          ),
           backgroundColor: Colors.transparent,
           appBar: customAppbar(
             height: 80,

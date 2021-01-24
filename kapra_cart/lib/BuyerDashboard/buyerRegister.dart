@@ -4,9 +4,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
 import '../constant.dart';
 
 class buyerRegiterScreen extends StatefulWidget {
+  roleOfUser userRole;
+  buyerRegiterScreen({this.userRole});
   @override
   _buyerRegiterScreenState createState() => _buyerRegiterScreenState();
 }
@@ -17,6 +20,7 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
   TextEditingController password = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController address = TextEditingController();
+  GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
   Future<File> file;
   String base64Image;
@@ -38,6 +42,7 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
         fit: BoxFit.fill,
       )),
       child: Scaffold(
+        key: _scaffoldkey,
         backgroundColor: Colors.transparent,
         body: layout(),
       ),
@@ -140,7 +145,18 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
                     borderRadius: BorderRadius.circular(50),
                     child: GestureDetector(
                       onTap: () {
-                        startUploadImage();
+                        if (name.text == "" ||
+                            email.text == "" ||
+                            password.text == "" ||
+                            phone.text == "" ||
+                            address.text == "" ||
+                            file == null) {
+                          _scaffoldkey.currentState.showSnackBar(SnackBar(
+                              content: Text("Complete your details first")));
+                          return;
+                        } else {
+                          startUploadImage(); /////// upload image and Register image
+                        }
                       },
                       child: Container(
                         width: 300,
@@ -211,7 +227,7 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
     String filename = tempFile.path.split('/').last;
     upload(filename);
     registerBuyer(name.text, email.text, password.text, phone.text,
-        address.text, filename);
+        address.text, filename, widget.userRole.currentRoleOfUser);
   }
 
   void upload(String filename) {
@@ -224,14 +240,17 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
   }
 
   void registerBuyer(String name, String email, String password, String phone,
-      String address, String filename) {
-    http.post("http://10.0.2.2/KapraCartScript/registerBuyer.php", body: {
+      String address, String filename, String table) {
+    http.post("http://10.0.2.2/KapraCartScript/registerUser.php", body: {
       'name': name,
       'email': email,
       'password': password,
       'phone': phone,
       'address': address,
-      'image': filename
+      'image': filename,
+      'table': table
     }).then((value) => print(value.body));
+    _scaffoldkey.currentState
+        .showSnackBar(SnackBar(content: Text("Registration Complete")));
   }
 }

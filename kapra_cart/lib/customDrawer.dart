@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/loginScreen.dart';
-import 'package:kapra_cart/varable.dart';
+import 'package:kapra_cart/roleOptScreen.dart';
 
 class customDrawer extends StatefulWidget {
+  loginUserModelClass userDetails;
+  customDrawer({this.userDetails});
   @override
   _customDrawerState createState() => _customDrawerState();
 }
@@ -30,14 +33,14 @@ class _customDrawerState extends State<customDrawer> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("UserName",
+                  child: Text(widget.userDetails.name.toUpperCase(),
                       style: TextStyle(
                         fontSize: 20,
                         //fontWeight: FontWeight.bold,
                         color: Colors.white,
                       )),
                 ),
-                Text("Email address",
+                Text(widget.userDetails.email,
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -46,11 +49,11 @@ class _customDrawerState extends State<customDrawer> {
             ),
           ),
           ListTile(
-            leading: Text("Your Profile"),
+            leading: Text(widget.userDetails.address),
             trailing: Icon(Icons.supervised_user_circle),
           ),
           ListTile(
-            leading: Text("Your Profile"),
+            leading: Text("your profile"),
             trailing: Icon(Icons.supervised_user_circle),
           ),
           ListTile(
@@ -67,7 +70,7 @@ class _customDrawerState extends State<customDrawer> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => loginScreen(),
+                    builder: (context) => roleOptScreen(),
                   ));
             },
             leading: Text("Sign out"),

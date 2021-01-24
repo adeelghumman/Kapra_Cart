@@ -1,5 +1,6 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/Shops/productShop.dart';
 import 'package:kapra_cart/Shops/serviceShops.dart';
 import 'package:kapra_cart/constant.dart';
@@ -8,6 +9,8 @@ import 'package:kapra_cart/customAppbar.dart';
 import '../customDrawer.dart';
 
 class buyerHomePage extends StatefulWidget {
+  loginUserModelClass userDetails;
+  buyerHomePage({this.userDetails});
   @override
   _buyerHomePageState createState() => _buyerHomePageState();
 }
@@ -23,7 +26,9 @@ class _buyerHomePageState extends State<buyerHomePage> {
           _scaffoldkey.currentState.openDrawer();
         },
       ),
-      drawer: customDrawer(),
+      drawer: customDrawer(
+        userDetails: widget.userDetails,
+      ),
       key: _scaffoldkey,
       body: SingleChildScrollView(
         child: Column(
@@ -80,7 +85,8 @@ class _buyerHomePageState extends State<buyerHomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => productShop(),
+                      builder: (context) =>
+                          productShop(userDetails: widget.userDetails),
                     ));
               },
               child: Container(
@@ -116,46 +122,48 @@ class _buyerHomePageState extends State<buyerHomePage> {
                           tileMode: TileMode.clamp))),
             ),
           ),
-          Container(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.supervised_user_circle,
-                      size: 35,
-                      color: Colors.white,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => serviceShops(
+                      userDetails: widget.userDetails,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => serviceShops(),
-                            ));
-                      },
-                      child: Text("Tailors",
+                  ));
+            },
+            child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.supervised_user_circle,
+                        size: 35,
+                        color: Colors.white,
+                      ),
+                      Text("Tailors",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-                          )),
-                    )
-                  ],
+                          ))
+                    ],
+                  ),
                 ),
-              ),
-              width: MediaQuery.of(context).size.width / 3,
-              height: 100,
-              decoration: BoxDecoration(
-                  color: buttonColor,
-                  borderRadius:
-                      BorderRadius.only(bottomLeft: Radius.circular(50)),
-                  gradient: LinearGradient(
-                      colors: [appbarColor, buttonColor],
-                      begin: FractionalOffset(1, 0),
-                      end: FractionalOffset(0, 0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp)))
+                width: MediaQuery.of(context).size.width / 3,
+                height: 100,
+                decoration: BoxDecoration(
+                    color: buttonColor,
+                    borderRadius:
+                        BorderRadius.only(bottomLeft: Radius.circular(50)),
+                    gradient: LinearGradient(
+                        colors: [appbarColor, buttonColor],
+                        begin: FractionalOffset(1, 0),
+                        end: FractionalOffset(0, 0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp))),
+          )
         ],
       ),
     );

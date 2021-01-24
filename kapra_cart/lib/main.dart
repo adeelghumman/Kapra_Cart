@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/BuyerDashboard/buyerHomePage.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/roleOptScreen.dart';
 import 'package:kapra_cart/splashScreen.dart';
-import 'package:kapra_cart/varable.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'ModelClasses/loginUserModelClass.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -30,18 +33,12 @@ class _applicationState extends State<application> {
   }
 
   void load() async {
-    //SharedPreferences.setMockInitialValues({});
+    //constants.sharedPreferences.clear();
     constants.sharedPreferences = await SharedPreferences.getInstance();
-    print(constants.sharedPreferences.getBool('login'));
 
-    if (constants.sharedPreferences.getBool('login') == true) {
-      Timer(Duration(seconds: 3), () {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => buyerHomePage(),
-            ));
-      });
+    if (constants.sharedPreferences.getBool('buyerlogin') == true) {
+      login(constants.sharedPreferences.getString("email"),
+          constants.sharedPreferences.getString("password"));
     } else {
       Timer(Duration(seconds: 2), () {
         Navigator.pushReplacement(
@@ -60,5 +57,25 @@ class _applicationState extends State<application> {
         body: splachScreen(),
       ),
     );
+  }
+
+  void login(email, password) async {
+    var response = await http.post(basicUrl + "checkBuyer.php", body: {
+      'email': email.text,
+      'password': password.text,
+      'table': "buyer"
+    });
+
+    loginUserModelClass user =
+        loginUserModelClass.fromjson(jsonDecode(response.body));
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => buyerHomePage(
+              userDetails: user,
+            ),
+          ));
+    });
   }
 }

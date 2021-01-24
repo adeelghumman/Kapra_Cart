@@ -5,9 +5,11 @@ import 'package:kapra_cart/BuyerDashboard/buyerHomePage.dart';
 import 'package:kapra_cart/BuyerDashboard/buyerRegister.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
+import 'package:kapra_cart/ShopKeeperDashboard/shopkeeperHomePage.dart';
+import 'package:kapra_cart/TailorDashboard/tailorHomePage.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:http/http.dart' as http;
-import 'package:kapra_cart/varable.dart';
+import 'package:kapra_cart/customDrawer.dart';
 
 class loginScreen extends StatefulWidget {
   roleOfUser userRole;
@@ -67,8 +69,20 @@ class _loginScreenState extends State<loginScreen> {
                     borderRadius: BorderRadius.circular(50),
                     child: GestureDetector(
                       onTap: () {
-                        if (widget.userRole.currentRoleOfUser == "Buyer") {
-                          login();
+                        if (email.text == "" || password.text == "") {
+                          _scaffoldkey.currentState.showSnackBar(
+                              SnackBar(content: Text("Complete your details")));
+                        } else {
+                          if (widget.userRole.currentRoleOfUser == "Buyer") {
+                            login("buyer");
+                          }
+                          if (widget.userRole.currentRoleOfUser ==
+                              "ShopKeeper") {
+                            login("shopkeeper");
+                          }
+                          if (widget.userRole.currentRoleOfUser == "Tailor") {
+                            login("tailor");
+                          }
                         }
                       },
                       child: Container(
@@ -104,13 +118,12 @@ class _loginScreenState extends State<loginScreen> {
                     borderRadius: BorderRadius.circular(50),
                     child: GestureDetector(
                       onTap: () {
-                        if (widget.userRole.currentRoleOfUser == "Buyer") {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => buyerRegiterScreen(),
-                              ));
-                        }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  buyerRegiterScreen(userRole: widget.userRole),
+                            ));
                       },
                       child: Container(
                         width: 300,
@@ -138,21 +151,47 @@ class _loginScreenState extends State<loginScreen> {
     );
   }
 
-  void login() async {
-    var response = await http.post(
-        "http://10.0.2.2/KapraCartScript/checkBuyer.php",
-        body: {'email': email.text, 'password': password.text});
+  void login(String tablename) async {
+    var response = await http.post(basicUrl + "checkUser.php", body: {
+      'email': email.text,
+      'password': password.text,
+      'table': tablename
+    });
+
     loginUserModelClass user =
         loginUserModelClass.fromjson(jsonDecode(response.body));
+
     print(user.message);
     if (user.message == "true") {
-      constants.sharedPreferences.setBool('login', true);
-      // print(constants.sharedPreferences.setBool('login', true));
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => buyerHomePage(),
-          ));
+      constants.sharedPreferences.setBool('buyerlogin', true);
+      constants.sharedPreferences.setString('email', user.email);
+      constants.sharedPreferences.setString('password', user.password);
+
+      if (tablename == "buyer") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => buyerHomePage(userDetails: user),
+            ));
+      }
+      if (tablename == "tailor") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => tailorHomePage(
+                  tailorDetails:
+                      user), ///////////////////////////////// TAILOR HOMEPAGE  NAVIGATE
+            ));
+      }
+      if (tablename == "shopkeeper") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => shopkeeperHomePage(
+                  shopkeeperDetails:
+                      user), /////////////////////////////////shopkeeper homepage naviagte
+            ));
+      }
     } else {
       _scaffoldkey.currentState
           .showSnackBar(SnackBar(content: Text("User Not Found")));
