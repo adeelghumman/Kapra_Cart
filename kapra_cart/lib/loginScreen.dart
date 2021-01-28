@@ -196,5 +196,8 @@ class _loginScreenState extends State<loginScreen> {
       _scaffoldkey.currentState
           .showSnackBar(SnackBar(content: Text("User Not Found")));
     }
+    constants.sharedPreferences.setString("table", tablename);
+    constants.sharedPreferences
+        .setString("userRole", widget.userRole.currentRoleOfUser);
   }
 }

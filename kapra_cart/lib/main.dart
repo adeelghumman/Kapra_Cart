@@ -33,12 +33,13 @@ class _applicationState extends State<application> {
   }
 
   void load() async {
-    //constants.sharedPreferences.clear();
     constants.sharedPreferences = await SharedPreferences.getInstance();
-
+    //constants.sharedPreferences.clear();
     if (constants.sharedPreferences.getBool('buyerlogin') == true) {
-      login(constants.sharedPreferences.getString("email"),
-          constants.sharedPreferences.getString("password"));
+      login(
+          constants.sharedPreferences.getString("email"),
+          constants.sharedPreferences.getString("password"),
+          constants.sharedPreferences.getString("table"));
     } else {
       Timer(Duration(seconds: 2), () {
         Navigator.pushReplacement(
@@ -59,12 +60,9 @@ class _applicationState extends State<application> {
     );
   }
 
-  void login(email, password) async {
-    var response = await http.post(basicUrl + "checkBuyer.php", body: {
-      'email': email.text,
-      'password': password.text,
-      'table': "buyer"
-    });
+  void login(email, password, table) async {
+    var response = await http.post(basicUrl + "checkUser.php",
+        body: {'email': email, 'password': password, 'table': table});
 
     loginUserModelClass user =
         loginUserModelClass.fromjson(jsonDecode(response.body));
