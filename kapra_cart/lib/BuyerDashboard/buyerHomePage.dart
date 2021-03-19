@@ -4,9 +4,8 @@ import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/Shops/productShop.dart';
 import 'package:kapra_cart/Shops/serviceShops.dart';
 import 'package:kapra_cart/constant.dart';
-import 'package:kapra_cart/customAppbar.dart';
-
-import '../customDrawer.dart';
+import 'package:kapra_cart/customWidgets/customAppbar.dart';
+import 'package:kapra_cart/customWidgets/customDrawer.dart';
 
 class buyerHomePage extends StatefulWidget {
   loginUserModelClass userDetails;

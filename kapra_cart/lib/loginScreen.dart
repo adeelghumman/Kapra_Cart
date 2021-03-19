@@ -9,10 +9,10 @@ import 'package:kapra_cart/ShopKeeperDashboard/shopkeeperHomePage.dart';
 import 'package:kapra_cart/TailorDashboard/tailorHomePage.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:http/http.dart' as http;
-import 'package:kapra_cart/customDrawer.dart';
 
 class loginScreen extends StatefulWidget {
   roleOfUser userRole;
+
   loginScreen({this.userRole});
   @override
   _loginScreenState createState() => _loginScreenState();
