@@ -42,7 +42,7 @@ class _buyerHomePageState extends State<buyerHomePage> {
     );
   }
 
-  //////////////////////////////////////////////////// below this Methods are Define
+  ////////////////////////////////////////////////////  Methods are Define
   homepageSlider() {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, right: 12.0),

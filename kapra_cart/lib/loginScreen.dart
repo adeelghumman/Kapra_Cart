@@ -187,7 +187,7 @@ class _loginScreenState extends State<loginScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => shopkeeperHomePage(
+              builder: (context) => ShopkeeperHomePage(
                   shopkeeperDetails:
                       user), /////////////////////////////////shopkeeper homepage naviagte
             ));
