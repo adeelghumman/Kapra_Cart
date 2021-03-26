@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/BuyerDashboard/buyerHomePage.dart';
+import 'package:kapra_cart/ShopKeeperDashboard/shopkeeperHomePage.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/roleOptScreen.dart';
 import 'package:kapra_cart/splashScreen.dart';
@@ -25,7 +26,7 @@ class application extends StatefulWidget {
 
 class _applicationState extends State<application> {
   @override
-  void initState() {
+  Future<void> initState() {
     // TODO: implement initState
     super.initState();
 
@@ -34,8 +35,14 @@ class _applicationState extends State<application> {
 
   void load() async {
     constants.sharedPreferences = await SharedPreferences.getInstance();
-    //constants.sharedPreferences.clear();
+
     if (constants.sharedPreferences.getBool('buyerlogin') == true) {
+      login(
+          constants.sharedPreferences.getString("email"),
+          constants.sharedPreferences.getString("password"),
+          constants.sharedPreferences.getString("table"));
+    }
+    if (constants.sharedPreferences.getBool('shopkeeper') == true) {
       login(
           constants.sharedPreferences.getString("email"),
           constants.sharedPreferences.getString("password"),
@@ -66,14 +73,27 @@ class _applicationState extends State<application> {
 
     loginUserModelClass user =
         loginUserModelClass.fromjson(jsonDecode(response.body));
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => buyerHomePage(
-              userDetails: user,
-            ),
-          ));
-    });
+    if (table == "buyer") {
+      Timer(Duration(seconds: 3), () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => buyerHomePage(
+                userDetails: user,
+              ),
+            ));
+      });
+    }
+    if (table == "shopkeeper") {
+      Timer(Duration(seconds: 3), () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShopkeeperHomePage(
+                shopkeeperDetails: user,
+              ),
+            ));
+      });
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kapra_cart/ModelClasses/getShopKeeperDetails.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/shopDetailsModelClass.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/shopkeeperHomePage.dart';
@@ -12,29 +13,34 @@ import 'package:kapra_cart/customWidgets/customAppbar.dart';
 import 'package:kapra_cart/customWidgets/customButton.dart';
 import 'package:http/http.dart' as http;
 
-class AddShopDetails extends StatefulWidget {
-  final String email;
-  final String password;
+class AddProducts extends StatefulWidget {
+  //final ShopDetailsModelClass shopId;
+  final String s_id;
+  final String shopKeeperId;
 
-  const AddShopDetails({Key key, this.email, this.password}) : super(key: key);
+  const AddProducts({
+    Key key,
+    this.s_id,
+    this.shopKeeperId,
+  }) : super(key: key);
+
   @override
-  _AddShopDetailsState createState() => _AddShopDetailsState();
+  _AddProductsState createState() => _AddProductsState();
 }
 
-class _AddShopDetailsState extends State<AddShopDetails> {
+class _AddProductsState extends State<AddProducts> {
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   TextEditingController name = TextEditingController();
-  TextEditingController address = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController city = TextEditingController();
+
+  TextEditingController price = TextEditingController();
+
   TextEditingController description = TextEditingController();
-  String shopType;
+  String productCategory;
   Future<File> file;
   String base64Image;
   File tempFile;
-  var sk_id;
-  var shop_id;
-  loginUserModelClass shopKeeperdetails;
+  String status = "";
+  String errormessage = "Error in uploading image";
 
   void pickImage() {
     file = ImagePicker.pickImage(source: ImageSource.gallery);
@@ -45,13 +51,12 @@ class _AddShopDetailsState extends State<AddShopDetails> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    shopType = "";
-    shopKeeperDetails();
+    productCategory = "";
   }
 
   void setShopType(val) {
     setState(() {
-      shopType = val;
+      productCategory = val;
     });
   }
 
@@ -63,12 +68,17 @@ class _AddShopDetailsState extends State<AddShopDetails> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         title: Center(
-          child: Text(
-            "Create Your Store",
-            style: TextStyle(
-                color: Colors.black45,
-                fontWeight: FontWeight.bold,
-                fontSize: 25),
+          child: GestureDetector(
+            onTap: () {
+              print(widget.s_id + widget.shopKeeperId);
+            },
+            child: Text(
+              "Add New Product",
+              style: TextStyle(
+                  color: Colors.black45,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25),
+            ),
           ),
         ),
       ),
@@ -104,7 +114,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Add Shop Details",
+                    "Add Product Details",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -131,13 +141,13 @@ class _AddShopDetailsState extends State<AddShopDetails> {
               Column(
                 children: [
                   Radio(
-                      value: "Boutique",
-                      groupValue: shopType,
+                      value: "Men",
+                      groupValue: productCategory,
                       onChanged: (value) {
                         setShopType(value);
                       }),
                   Text(
-                    "Boutique",
+                    "Men",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   )
                 ],
@@ -145,13 +155,27 @@ class _AddShopDetailsState extends State<AddShopDetails> {
               Column(
                 children: [
                   Radio(
-                      value: "Tailor",
-                      groupValue: shopType,
+                      value: "Women",
+                      groupValue: productCategory,
                       onChanged: (value) {
                         setShopType(value);
                       }),
                   Text(
-                    "Tailor",
+                    "Women",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Radio(
+                      value: "Kids",
+                      groupValue: productCategory,
+                      onChanged: (value) {
+                        setShopType(value);
+                      }),
+                  Text(
+                    "Kids",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   )
                 ],
@@ -170,32 +194,16 @@ class _AddShopDetailsState extends State<AddShopDetails> {
           padding: const EdgeInsets.all(8.0),
           child: TextFeild(
             controller: name,
-            name: "Name of Shop",
+            name: "Product Name",
             hintText: "name",
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFeild(
-            controller: address,
-            name: "Address",
-            hintText: "Address",
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFeild(
-            controller: phone,
-            name: "Phone",
-            hintText: "phone #",
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFeild(
-            controller: city,
-            name: "City",
-            hintText: "City",
+            controller: price,
+            name: "Price",
+            hintText: "price",
           ),
         ),
       ],
@@ -215,7 +223,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "Add Shop Image",
+                    "Add Product Image",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -288,7 +296,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
                         fontSize: 20),
                   ),
                   Text(
-                    "Step:3  Entering Your Desdription",
+                    "Step:3  Entering Description about product",
                     style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -325,18 +333,13 @@ class _AddShopDetailsState extends State<AddShopDetails> {
               onTap: () {
                 if (checkAllFeilds() == true) {
                   uploadShopDetails();
+                  startUploadImage();
 
-                  ////////////////////////////// add SK_ID and S_ID to shopkeeper and shop details.
-
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ShopkeeperHomePage(),
-                      ));
+                  Navigator.pop(context);
                 }
               },
               child: CustomButton(
-                buttonName: "Add Shop",
+                buttonName: "Add Product",
               ),
             ),
           ),
@@ -346,15 +349,14 @@ class _AddShopDetailsState extends State<AddShopDetails> {
   }
 
   void uploadShopDetails() async {
-    var response = await http.post(basicUrl + "uploadShopDetails.php", body: {
+    var response =
+        await http.post(basicUrl + "uploadProductDetails.php", body: {
       'name': name.text,
-      'address': address.text,
-      'phone': phone.text,
-      'city': city.text,
-      'category': shopType,
+      'price': price.text,
+      'category': productCategory,
       'image': tempFile.path.split("/").last,
       'description': description.text,
-      'sk_id': sk_id,
+      'shopid': widget.s_id
     });
 
     print(response.body);
@@ -392,11 +394,9 @@ class _AddShopDetailsState extends State<AddShopDetails> {
 
   bool checkAllFeilds() {
     if (name.text == "" ||
-        address.text == "" ||
-        phone.text == "" ||
-        city.text == "" ||
+        price.text == "" ||
         description.text == "" ||
-        shopType == null) {
+        productCategory == null) {
       _scaffoldState.currentState
           .showSnackBar(SnackBar(content: Text("Complete the Feilds First")));
       return false;
@@ -406,14 +406,27 @@ class _AddShopDetailsState extends State<AddShopDetails> {
     ;
   }
 
-  void shopKeeperDetails() async {
-    final response = await http.post(basicUrl + "checkUser.php", body: {
-      'email': widget.email,
-      'password': widget.password,
-      'table': "shopkeeper"
+  void setstatus(String message) {
+    status = message;
+  }
+
+  startUploadImage() {
+    setstatus("Uploading image.... ");
+    if (null == tempFile.path) {
+      setstatus(errormessage);
+      return;
+    }
+    String filename = tempFile.path.split('/').last;
+    upload(filename);
+  }
+
+  void upload(String filename) {
+    http.post("http://10.0.2.2/KapraCartScript/uploadImage.php",
+        body: {"image": base64Image, "name": filename}).then((value) {
+      setstatus(value.statusCode == 200 ? value.body : errormessage);
+    }).catchError((error) {
+      setstatus(error);
     });
-    shopKeeperdetails = loginUserModelClass.fromjson(jsonDecode(response.body));
-    sk_id = shopKeeperdetails.id;
   }
 }
 

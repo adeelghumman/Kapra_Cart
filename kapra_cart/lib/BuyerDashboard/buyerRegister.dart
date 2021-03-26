@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/addShopDetails.dart';
 import '../constant.dart';
@@ -146,24 +147,27 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
                     borderRadius: BorderRadius.circular(50),
                     child: GestureDetector(
                       onTap: () {
-                        // if (name.text == "" ||
-                        //     email.text == "" ||
-                        //     password.text == "" ||
-                        //     phone.text == "" ||
-                        //     address.text == "" ||
-                        //     file == null) {
-                        //   _scaffoldkey.currentState.showSnackBar(SnackBar(
-                        //       content: Text("Complete your details first")));
-                        //   return;
-                        // } else {
-                        //   startUploadImage(); /////// upload image and Register image
-                        // }
+                        if (name.text == "" ||
+                            email.text == "" ||
+                            password.text == "" ||
+                            phone.text == "" ||
+                            address.text == "" ||
+                            file == null) {
+                          _scaffoldkey.currentState.showSnackBar(SnackBar(
+                              content: Text("Complete your details first")));
+                          return;
+                        } else {
+                          startUploadImage(); /////// upload image and Register image
+                        }
 
                         if (widget.userRole.currentRoleOfUser == "ShopKeeper") {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AddShopDetails(),
+                                builder: (context) => AddShopDetails(
+                                  email: email.text,
+                                  password: password.text,
+                                ),
                               ));
                         }
                       },

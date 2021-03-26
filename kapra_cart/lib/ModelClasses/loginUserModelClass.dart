@@ -19,5 +19,6 @@ class loginUserModelClass {
     address = json['address'];
     image = json['image'];
     message = json['message'];
+    id = json['id'];
   }
 }

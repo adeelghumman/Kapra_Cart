@@ -162,7 +162,7 @@ class _loginScreenState extends State<loginScreen> {
         loginUserModelClass.fromjson(jsonDecode(response.body));
 
     print(user.message);
-    if (user.message == "true") {
+    if (user.message == "true" && tablename == "buyer") {
       constants.sharedPreferences.setBool('buyerlogin', true);
       constants.sharedPreferences.setString('email', user.email);
       constants.sharedPreferences.setString('password', user.password);
@@ -174,22 +174,21 @@ class _loginScreenState extends State<loginScreen> {
               builder: (context) => buyerHomePage(userDetails: user),
             ));
       }
-      if (tablename == "tailor") {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => tailorHomePage(
-                  tailorDetails:
-                      user), ///////////////////////////////// TAILOR HOMEPAGE  NAVIGATE
-            ));
-      }
+    }
+    /////////////////////////////// for shop Keeper
+
+    if (user.message == "true" && tablename == "shopkeeper") {
+      constants.sharedPreferences.setBool('shopkeeper', true);
+      constants.sharedPreferences.setString('email', user.email);
+      constants.sharedPreferences.setString('password', user.password);
+
       if (tablename == "shopkeeper") {
         Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ShopkeeperHomePage(
-                  shopkeeperDetails:
-                      user), /////////////////////////////////shopkeeper homepage naviagte
+                shopkeeperDetails: user,
+              ),
             ));
       }
     } else {
