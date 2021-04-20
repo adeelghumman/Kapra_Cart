@@ -1,5 +1,7 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/API/allShopsApi.dart';
+import 'package:kapra_cart/ModelClasses/allShopsModelClass.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/Shops/productShop.dart';
 import 'package:kapra_cart/Shops/serviceShops.dart';
@@ -195,7 +197,9 @@ class _buyerHomePageState extends State<buyerHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => productShop(),
+                          builder: (context) => productShop(
+                            userDetails: widget.userDetails,
+                          ),
                         ));
                   },
                   child: Text("SHOPS",
@@ -208,23 +212,33 @@ class _buyerHomePageState extends State<buyerHomePage> {
               ),
             ),
             SizedBox(
-              height: 150,
-              width: MediaQuery.of(context).size.width - 80,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return shop("Asset/homepageSlider3.jpg");
-                },
-                itemCount: 4,
-              ),
-            )
+                height: 150,
+                width: MediaQuery.of(context).size.width - 80,
+                child: FutureBuilder(
+                  future: fetchAllShops(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, index) {
+                          ShopDetails shopDetails = snapshot.data[index];
+
+                          return shop(shopDetails);
+                        },
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ))
           ],
         ),
       ),
     );
   }
 
-  shop(String image) {
+  shop(ShopDetails shopDetails) {
     return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: Container(
@@ -247,14 +261,14 @@ class _buyerHomePageState extends State<buyerHomePage> {
                 ClipRRect(
                   borderRadius:
                       BorderRadius.only(topRight: Radius.circular(80)),
-                  child: Image.asset(
-                    image,
-                    height: 80,
-                    width: 230,
+                  child: Image.network(
+                    "http://192.168.18.13/kapraCartScript/${shopDetails.sImage}",
+                    height: 100,
+                    width: 100,
                     fit: BoxFit.fill,
                   ),
                 ),
-                Text("Shop name ",
+                Text(shopDetails.sName,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -262,8 +276,7 @@ class _buyerHomePageState extends State<buyerHomePage> {
                     )),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                      " Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum",
+                  child: Text(shopDetails.sDescription,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -303,7 +316,7 @@ class _buyerHomePageState extends State<buyerHomePage> {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return shop("Asset/homepageSlider2.jpg");
+                  // return shop("Asset/homepageSlider2.jpg");
                 },
                 itemCount: 4,
               ),

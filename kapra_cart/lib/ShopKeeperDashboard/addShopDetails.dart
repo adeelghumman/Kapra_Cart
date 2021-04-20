@@ -35,6 +35,8 @@ class _AddShopDetailsState extends State<AddShopDetails> {
   var sk_id;
   var shop_id;
   loginUserModelClass shopKeeperdetails;
+  String status = "";
+  String errormessage = "Error in uploading image";
 
   void pickImage() {
     file = ImagePicker.pickImage(source: ImageSource.gallery);
@@ -325,6 +327,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
               onTap: () {
                 if (checkAllFeilds() == true) {
                   uploadShopDetails();
+                  startUploadImage();
 
                   ////////////////////////////// add SK_ID and S_ID to shopkeeper and shop details.
 
@@ -414,6 +417,29 @@ class _AddShopDetailsState extends State<AddShopDetails> {
     });
     shopKeeperdetails = loginUserModelClass.fromjson(jsonDecode(response.body));
     sk_id = shopKeeperdetails.id;
+  }
+
+  void setstatus(String message) {
+    status = message;
+  }
+
+  startUploadImage() {
+    setstatus("Uploading image.... ");
+    if (null == tempFile.path) {
+      setstatus(errormessage);
+      return;
+    }
+    String filename = tempFile.path.split('/').last;
+    upload(filename);
+  }
+
+  void upload(String filename) {
+    http.post("http://10.0.2.2/KapraCartScript/uploadImage.php",
+        body: {"image": base64Image, "name": filename}).then((value) {
+      setstatus(value.statusCode == 200 ? value.body : errormessage);
+    }).catchError((error) {
+      setstatus(error);
+    });
   }
 }
 

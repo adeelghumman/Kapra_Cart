@@ -75,7 +75,9 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProfileScreenShopkeeper(),
+                      builder: (context) => ProfileScreenShopkeeper(
+                        shopkeeperDetails: widget.shopkeeperDetails,
+                      ),
                     ));
               },
             ),
@@ -125,10 +127,10 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
       child: Column(
         children: [
           SizedBox(
-            height: 25,
+            height: 30,
           ),
           Text(
-            widget.shopkeeperDetails.name,
+            widget.shopkeeperDetails.name.toString().toUpperCase(),
             style: TextStyle(
                 fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
           ),
