@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/API/allShopsApi.dart';
+import 'package:kapra_cart/BuyerDashboard/Shops/shopsHomepageBuyer.dart';
+
 import 'package:kapra_cart/ModelClasses/allShopsModelClass.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
-import 'package:kapra_cart/Shops/shopsHomepageBuyer.dart';
+
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customWidgets/customAppbar.dart';
 import 'package:kapra_cart/customWidgets/customDrawer.dart';
+import 'package:kapra_cart/BuyerDashboard/productDetailsPage.dart';
 
 import 'dart:ui';
 
@@ -142,7 +145,7 @@ class _productShopState extends State<productShop> {
       padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 6.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
+          Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => ShopsHomepage_forBuyer(

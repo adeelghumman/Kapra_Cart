@@ -3,7 +3,8 @@ import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/customWidgets/customAppbar.dart';
 import 'package:kapra_cart/customWidgets/customDrawer.dart';
 
-import '../constant.dart';
+import '../../constant.dart';
+
 import 'backgroundCurveLayout.dart';
 
 class serviceShops extends StatefulWidget {

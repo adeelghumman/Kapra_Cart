@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:kapra_cart/API/allShopsApi.dart';
 import 'package:kapra_cart/ModelClasses/allShopsModelClass.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
-import 'package:kapra_cart/Shops/productShop.dart';
-import 'package:kapra_cart/Shops/serviceShops.dart';
+
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customWidgets/customAppbar.dart';
 import 'package:kapra_cart/customWidgets/customDrawer.dart';
+
+import 'Shops/productShop.dart';
+import 'Shops/serviceShops.dart';
 
 class buyerHomePage extends StatefulWidget {
   loginUserModelClass userDetails;
@@ -255,14 +257,13 @@ class _buyerHomePageState extends State<buyerHomePage> {
                 tileMode: TileMode.clamp)),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 30),
+            padding: const EdgeInsets.only(top: 5, bottom: 30),
             child: Column(
               children: <Widget>[
                 ClipRRect(
-                  borderRadius:
-                      BorderRadius.only(topRight: Radius.circular(80)),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.network(
-                    "http://192.168.18.13/kapraCartScript/${shopDetails.sImage}",
+                    " ${shopDetails.sImage}",
                     height: 100,
                     width: 100,
                     fit: BoxFit.fill,
