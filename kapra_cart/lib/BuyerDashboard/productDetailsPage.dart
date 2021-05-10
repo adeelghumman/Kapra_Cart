@@ -37,6 +37,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   }
 
   bool isLiked = true;
+
   Widget _appBar() {
     return Container(
       padding: AppTheme.padding,

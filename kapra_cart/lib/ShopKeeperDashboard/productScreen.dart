@@ -50,9 +50,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         itemCount: snapshot.data.length,
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, index) {
-                          Product users = snapshot.data[index];
+                          Product product = snapshot.data[index];
 
-                          return allProducts(users);
+                          return allProducts(product);
                         },
                       );
                     }

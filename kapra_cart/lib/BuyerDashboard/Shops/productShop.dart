@@ -150,6 +150,7 @@ class _productShopState extends State<productShop> {
               MaterialPageRoute(
                 builder: (context) => ShopsHomepage_forBuyer(
                   shopDetails: shopDetails,
+                  userDetails: widget.userDetails,
                 ),
               ));
         },

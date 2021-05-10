@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/API/allShopsApi.dart';
 import 'package:kapra_cart/API/productApi.dart';
+import 'package:kapra_cart/BuyerDashboard/cart.dart';
+import 'package:kapra_cart/BuyerDashboard/cartScreen.dart';
+import 'package:kapra_cart/Constants/light_color.dart';
 
 import 'package:kapra_cart/ModelClasses/allShopsModelClass.dart';
+import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/product.dart';
 
 import '../../constant.dart';
@@ -10,18 +14,47 @@ import '../productDetailsPage.dart';
 
 class ShopsHomepage_forBuyer extends StatefulWidget {
   final ShopDetails shopDetails;
+  final loginUserModelClass userDetails;
 
-  const ShopsHomepage_forBuyer({Key key, this.shopDetails}) : super(key: key);
+  const ShopsHomepage_forBuyer({Key key, this.shopDetails, this.userDetails})
+      : super(key: key);
 
   @override
   _ShopsHomepage_forBuyerState createState() => _ShopsHomepage_forBuyerState();
 }
 
 class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
+  int noOfCartItems = 0;
+
+  Cart cart = new Cart();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: layout(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CartScreen(
+                  cart: cart,
+                  shopDetails: widget.shopDetails,
+                  userDetails: widget.userDetails,
+                ),
+              ));
+        },
+        backgroundColor: LightColor.orange,
+        child: Column(
+          children: [
+            Text(noOfCartItems.toString()),
+            Icon(Icons.shopping_basket,
+                color: Theme.of(context)
+                    .floatingActionButtonTheme
+                    .backgroundColor),
+          ],
+        ),
+      ),
     );
   }
 
@@ -29,10 +62,13 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
     return Container(
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             SizedBox(
-              height: 50,
+              height: 25,
+            ),
+            SizedBox(
+              height: 10,
             ),
             products(widget.shopDetails),
             SizedBox(
@@ -50,8 +86,8 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
                         itemBuilder: (BuildContext context, index) {
                           Product shopDetails = snapshot.data[index];
 
-                          return ItemCard(
-                            shopDetails: shopDetails,
+                          return itemCard(
+                            shopDetails,
                           );
                         },
                       );
@@ -67,7 +103,7 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
 
   products(ShopDetails shopDetails) {
     return Padding(
-      padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 6.0),
+      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -137,21 +173,8 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
       ),
     );
   }
-}
 
-class ItemCard extends StatelessWidget {
-  final Product shopDetails;
-  final Product product;
-  final Function press;
-  const ItemCard({
-    Key key,
-    this.product,
-    this.press,
-    this.shopDetails,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  itemCard(Product shopDetails) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,14 +197,41 @@ class ItemCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16)),
               child: Image.network(imageUrl + "${shopDetails.pImage}")),
         ),
-        Text(
-          shopDetails.pName.toUpperCase(),
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        Row(
+          children: [
+            Column(
+              children: [
+                Text(
+                  shopDetails.pName.toUpperCase(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                Text(
+                  shopDetails.pPrice.toString(),
+                  style: TextStyle(fontSize: 18),
+                )
+              ],
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  noOfCartItems++;
+                  cart.addProductInCart(shopDetails.pId, shopDetails.pName,
+                      shopDetails.pPrice, shopDetails.pImage);
+                  print(cart.products);
+                });
+              },
+              child: Container(
+                child: Center(child: Text("Cart me")),
+                height: 25,
+                width: 75,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueAccent),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
+              ),
+            ),
+          ],
         ),
-        Text(
-          shopDetails.pPrice.toString(),
-          style: TextStyle(fontSize: 18),
-        )
       ],
     );
   }
