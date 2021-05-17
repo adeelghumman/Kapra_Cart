@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/shopDetailsModelClass.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/addProducts.dart';
+import 'package:kapra_cart/ShopKeeperDashboard/ordersScreen.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/productScreen.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/profileScreenShopkeeper.dart';
 import 'package:kapra_cart/constant.dart';
@@ -120,7 +121,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Colors.red[400],
+        color: Colors.blue[400],
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(50), topRight: Radius.circular(150)),
       ),
@@ -132,7 +133,9 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
           Text(
             widget.shopkeeperDetails.name.toString().toUpperCase(),
             style: TextStyle(
-                fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue[100]),
           ),
           Row(
             children: [
@@ -193,70 +196,37 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                 ),
               )
             ],
-          ), /////////////////////////////////////2  row
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Center(
-                          child: Text("0%",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ),
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.green, width: 3),
-                            borderRadius: BorderRadius.circular(50)),
+          ),
+          /////////////////////////////////////2  row
+          Material(
+            borderRadius: BorderRadius.circular(30),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrdersScrren(
+                        shopId: shopId,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("Warnings",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Center(
-                          child: Text("100%",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ),
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.green, width: 3),
-                            borderRadius: BorderRadius.circular(50)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("Response Time",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)),
-                      )
-                    ],
-                  ),
-                )
-              ],
+                    ));
+              },
+              child: Container(
+                child: Center(
+                    child: Text(
+                  "Orders",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                )),
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.green[400]),
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

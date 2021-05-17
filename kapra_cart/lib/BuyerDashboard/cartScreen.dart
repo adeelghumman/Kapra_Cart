@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/API/cartProducts.dart';
 import 'package:kapra_cart/BuyerDashboard/Shops/shopsHomepageBuyer.dart';
@@ -31,43 +33,44 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   int noOfDisplay = 0;
+  GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        onBackPressed(); // Action to perform on back pressed
-        return false;
-      },
-      child: Scaffold(
-        body: layout(),
-      ),
+    // return WillPopScope(
+    //   onWillPop: () async {
+    //     onBackPressed(); // Action to perform on back pressed
+    //     return false;
+    //   },
+    return Scaffold(
+      key: _scaffoldkey,
+      body: layout(),
     );
   }
 
   layout() {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-              child: ListView.builder(
-            itemCount: widget.cart.products.length,
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, index) {
-              return cartItems(widget.cart.products[index], index);
-            },
-          )),
-          lowerlayout(),
-          Expanded(
-            child: Padding(
+    return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          children: [
+            Container(
+                child: ListView.builder(
+              itemCount: widget.cart.products.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, index) {
+                return cartItems(widget.cart.products[index], index);
+              },
+            )),
+            lowerlayout(),
+            Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [_price(), _submitButton(context)],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -194,7 +197,16 @@ class _CartScreenState extends State<CartScreen> {
   Widget _submitButton(BuildContext context) {
     return FlatButton(
         onPressed: () {
-          uploadOrderDetails();
+          int bill = widget.cart.totalBill();
+          uploadOrderDetails(bill);
+          print(widget.shopDetails.sId);
+          print(widget.cart.totalBill());
+          _scaffoldkey.currentState.showSnackBar(
+              SnackBar(content: Text("Order Placed successfully")));
+
+          Timer(Duration(seconds: 3), () {
+            Navigator.pop(context);
+          });
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         color: LightColor.orange,
@@ -203,7 +215,7 @@ class _CartScreenState extends State<CartScreen> {
           padding: EdgeInsets.symmetric(vertical: 12),
           width: AppTheme.fullWidth(context) * .7,
           child: TitleText(
-            text: 'Next',
+            text: 'Place order',
             color: LightColor.background,
             fontWeight: FontWeight.w500,
           ),
@@ -307,12 +319,12 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void uploadOrderDetails() async {
+  void uploadOrderDetails(int bill) async {
     final response = await http.post(basicUrl + "OrderDetails.php", body: {
-      'buyerId': int.parse(widget.userDetails.id),
-      'shopId': int.parse(widget.shopDetails.sId),
-      'ProductsBill': widget.cart.totalBill(),
-      'ProductIds': "21",
+      'buyerId': widget.userDetails.id,
+      'shopId': widget.shopDetails.sId,
+      'ProductsBill': bill.toString(),
+      'ProductIds': "adeel",
       'PaymentMethod': "COD"
     });
     print(response.body);
