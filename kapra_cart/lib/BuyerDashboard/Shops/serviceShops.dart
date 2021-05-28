@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/API/allTailorShopsApi.dart';
+import 'package:kapra_cart/BuyerDashboard/Shops/tailorHomepage_forBuyer.dart';
+import 'package:kapra_cart/ModelClasses/allTailorShopDetails.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/customWidgets/customAppbar.dart';
 import 'package:kapra_cart/customWidgets/customDrawer.dart';
@@ -50,7 +53,7 @@ class _serviceShopsState extends State<serviceShops> {
           Padding(
               padding: EdgeInsets.only(left: 14, bottom: 10),
               child: Text(
-                'Browse Tailors',
+                'Browse Shops',
                 style: TextStyle(
                     fontSize: 30,
                     color: Colors.white,
@@ -112,116 +115,114 @@ class _serviceShopsState extends State<serviceShops> {
   }
 
   shoplist() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return shops();
-        },
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 22.0),
+      child: SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: FutureBuilder(
+            future: fetchAllTailorShops(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: snapshot.data.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, index) {
+                    AllTailorsShopDetails shoAllTailorsShopDetailspDetails =
+                        snapshot.data[index];
+
+                    return shops(shoAllTailorsShopDetailspDetails);
+                  },
+                );
+              }
+              return CircularProgressIndicator();
+            },
+          )),
     );
   }
 
-  shops() {
+  shops(AllTailorsShopDetails shopDetails) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 6.0),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [appbarColor, buttonColor],
-            begin: FractionalOffset(0, 0),
-            end: FractionalOffset(1, 0),
-            stops: [0, 1],
+      child: GestureDetector(
+        onTap: () {
+          print(widget.userDetails.id);
+          ////////////////////////////////////////////////////////////////////////////////////
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TailorHomepage_forBuyer(
+                  tailorshopDetails: shopDetails,
+                  userDetails: widget.userDetails,
+                ),
+              ));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [appbarColor, buttonColor],
+              begin: FractionalOffset(0, 0),
+              end: FractionalOffset(1, 0),
+              stops: [0, 1],
+            ),
+            borderRadius: BorderRadius.circular(0.0),
           ),
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        height: 120.0,
-        child: Stack(
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
-                  child: Container(
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'Asset/02.jpg',
-                          ),
-                          fit: BoxFit.fill),
+          height: 120.0,
+          child: Stack(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        imageUrl + "${shopDetails.tsImage}",
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  height: 30.0,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "1988",
-                      style: TextStyle(
-                        color: Colors.amber,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Text("Porsche 911",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontFamily: 'Cursive',
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                    Container(
-                      height: 10.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            "100k Mi",
+                  Container(
+                    height: 30.0,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12.0),
+                        child: Text(shopDetails.tsName.toUpperCase(),
                             style: TextStyle(
-                              fontSize: 12.0,
                               color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            width: 20.0,
-                          ),
-                          Text("White",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.0,
-                                fontFamily: 'Cursive',
-                              )),
-                          Container(
-                            width: 20.0,
-                          ),
-                          Text("\$54,999",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.0,
-                                fontFamily: 'Cursive',
-                              )),
-                          Container(
-                            width: 20.0,
-                          ),
-                        ],
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                            )),
                       ),
-                    )
-                  ],
-                )
-              ],
-            )
-          ],
+                      Container(
+                        height: 10.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30.0),
+                        child: Row(
+                          children: [
+                            Text(shopDetails.tsDescription,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                )),
+                            Container(
+                              width: 20.0,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

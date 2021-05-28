@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kapra_cart/ModelClasses/getShopKeeperDetails.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/shopDetailsModelClass.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/shopkeeperHomePage.dart';
@@ -12,29 +13,28 @@ import 'package:kapra_cart/customWidgets/customAppbar.dart';
 import 'package:kapra_cart/customWidgets/customButton.dart';
 import 'package:http/http.dart' as http;
 
-class AddShopDetails extends StatefulWidget {
-  final String email;
-  final String password;
+class AddService extends StatefulWidget {
+  //final ShopDetailsModelClass shopId;
+  final String ts_id;
+  final String t_id;
 
-  const AddShopDetails({Key key, this.email, this.password}) : super(key: key);
+  const AddService({this.ts_id, this.t_id}) : super();
+
   @override
-  _AddShopDetailsState createState() => _AddShopDetailsState();
+  _AddServiceState createState() => _AddServiceState();
 }
 
-class _AddShopDetailsState extends State<AddShopDetails> {
+class _AddServiceState extends State<AddService> {
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   TextEditingController name = TextEditingController();
-  TextEditingController address = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController city = TextEditingController();
+
+  TextEditingController price = TextEditingController();
+
   TextEditingController description = TextEditingController();
-  String shopType;
+  String productCategory;
   Future<File> file;
   String base64Image;
   File tempFile;
-  var sk_id;
-  var shop_id;
-  loginUserModelClass shopKeeperdetails;
   String status = "";
   String errormessage = "Error in uploading image";
 
@@ -47,13 +47,12 @@ class _AddShopDetailsState extends State<AddShopDetails> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    shopType = "";
-    shopKeeperDetails();
+    productCategory = "";
   }
 
   void setShopType(val) {
     setState(() {
-      shopType = val;
+      productCategory = val;
     });
   }
 
@@ -65,12 +64,17 @@ class _AddShopDetailsState extends State<AddShopDetails> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         title: Center(
-          child: Text(
-            "Create Your Store",
-            style: TextStyle(
-                color: Colors.black45,
-                fontWeight: FontWeight.bold,
-                fontSize: 25),
+          child: GestureDetector(
+            onTap: () {
+              print(widget.t_id + widget.ts_id);
+            },
+            child: Text(
+              "Add New Service",
+              style: TextStyle(
+                  color: Colors.black45,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25),
+            ),
           ),
         ),
       ),
@@ -98,7 +102,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
               height: 35,
               width: 35,
               decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(25)),
+                  color: Colors.blue, borderRadius: BorderRadius.circular(25)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -106,7 +110,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Add Shop Details",
+                    "Add Service Details",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -125,42 +129,6 @@ class _AddShopDetailsState extends State<AddShopDetails> {
           ],
         ),
         allFeilds(),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Radio(
-                      value: "Boutique",
-                      groupValue: shopType,
-                      onChanged: (value) {
-                        setShopType(value);
-                      }),
-                  Text(
-                    "Boutique",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Radio(
-                      value: "Tailor",
-                      groupValue: shopType,
-                      onChanged: (value) {
-                        setShopType(value);
-                      }),
-                  Text(
-                    "Tailor",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-            ],
-          ),
-        )
       ],
     );
   }
@@ -172,32 +140,16 @@ class _AddShopDetailsState extends State<AddShopDetails> {
           padding: const EdgeInsets.all(8.0),
           child: TextFeild(
             controller: name,
-            name: "Name of Shop",
+            name: "Service Name",
             hintText: "name",
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFeild(
-            controller: address,
-            name: "Address",
-            hintText: "Address",
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFeild(
-            controller: phone,
-            name: "Phone",
-            hintText: "phone #",
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFeild(
-            controller: city,
-            name: "City",
-            hintText: "City",
+            controller: price,
+            name: "Price",
+            hintText: "price",
           ),
         ),
       ],
@@ -217,7 +169,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "Add Shop Image",
+                    "Add Services Image",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -237,7 +189,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
               height: 35,
               width: 35,
               decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(25)),
+                  color: Colors.blue, borderRadius: BorderRadius.circular(25)),
             ),
           ],
         ),
@@ -275,7 +227,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
               height: 35,
               width: 35,
               decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(25)),
+                  color: Colors.blue, borderRadius: BorderRadius.circular(25)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -290,7 +242,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
                         fontSize: 20),
                   ),
                   Text(
-                    "Step:3  Entering Your Desdription",
+                    "Step:3  Entering Description about Service",
                     style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -324,20 +276,29 @@ class _AddShopDetailsState extends State<AddShopDetails> {
                   ));
             },
             child: GestureDetector(
-              onTap: () {
-                if (checkAllFeilds() == true) {
-                  uploadShopDetails();
-                  startUploadImage();
+                onTap: () {
+                  if (checkAllFeilds() == true) {
+                    uploadShopDetails();
+                    startUploadImage();
 
-                  ////////////////////////////// add SK_ID and S_ID to shopkeeper and shop details.
-
-                  Navigator.pop(context);
-                }
-              },
-              child: CustomButton(
-                buttonName: "Add Shop",
-              ),
-            ),
+                    Navigator.pop(context);
+                  }
+                },
+                child: Container(
+                  width: 300,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Center(
+                    child: Text("Add Services",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )),
+                  ),
+                )),
           ),
         )
       ],
@@ -345,15 +306,13 @@ class _AddShopDetailsState extends State<AddShopDetails> {
   }
 
   void uploadShopDetails() async {
-    var response = await http.post(basicUrl + "uploadShopDetails.php", body: {
+    var response =
+        await http.post(basicUrl + "uploadServiceDetails.php", body: {
       'name': name.text,
-      'address': address.text,
-      'phone': phone.text,
-      'city': city.text,
-      'category': shopType,
+      'price': price.text,
       'image': tempFile.path.split("/").last,
       'description': description.text,
-      'sk_id': sk_id,
+      't_id': widget.t_id
     });
 
     print(response.body);
@@ -391,11 +350,9 @@ class _AddShopDetailsState extends State<AddShopDetails> {
 
   bool checkAllFeilds() {
     if (name.text == "" ||
-        address.text == "" ||
-        phone.text == "" ||
-        city.text == "" ||
+        price.text == "" ||
         description.text == "" ||
-        shopType == null) {
+        productCategory == null) {
       _scaffoldState.currentState
           .showSnackBar(SnackBar(content: Text("Complete the Feilds First")));
       return false;
@@ -403,16 +360,6 @@ class _AddShopDetailsState extends State<AddShopDetails> {
       return true;
     }
     ;
-  }
-
-  void shopKeeperDetails() async {
-    final response = await http.post(basicUrl + "checkUser.php", body: {
-      'email': widget.email,
-      'password': widget.password,
-      'table': "shopkeeper"
-    });
-    shopKeeperdetails = loginUserModelClass.fromjson(jsonDecode(response.body));
-    sk_id = shopKeeperdetails.id;
   }
 
   void setstatus(String message) {

@@ -53,18 +53,6 @@ class _customDrawerState extends State<customDrawer> {
             trailing: Icon(Icons.supervised_user_circle),
           ),
           ListTile(
-            leading: Text("your profile"),
-            trailing: Icon(Icons.supervised_user_circle),
-          ),
-          ListTile(
-            leading: Text("Your Profile"),
-            trailing: Icon(Icons.supervised_user_circle),
-          ),
-          ListTile(
-            leading: Text("Your Profile"),
-            trailing: Icon(Icons.supervised_user_circle),
-          ),
-          ListTile(
             onTap: () {
               constants.sharedPreferences.clear();
               Navigator.pushReplacement(

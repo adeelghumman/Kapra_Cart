@@ -1,7 +1,9 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/API/allShopsApi.dart';
+import 'package:kapra_cart/API/allTailorShopsApi.dart';
 import 'package:kapra_cart/ModelClasses/allShopsModelClass.dart';
+import 'package:kapra_cart/ModelClasses/allTailorShopDetails.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 
 import 'package:kapra_cart/constant.dart';
@@ -263,7 +265,7 @@ class _buyerHomePageState extends State<buyerHomePage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.network(
-                    basicUrl + "${shopDetails.sImage}",
+                    imageUrl + "${shopDetails.sImage}",
                     height: 100,
                     width: 100,
                     fit: BoxFit.fill,
@@ -312,16 +314,28 @@ class _buyerHomePageState extends State<buyerHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-              height: 150,
-              width: MediaQuery.of(context).size.width - 90,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  // return shop("Asset/homepageSlider2.jpg");
-                },
-                itemCount: 4,
-              ),
-            ),
+                height: 150,
+                width: MediaQuery.of(context).size.width - 100,
+                child: FutureBuilder(
+                  future: fetchAllTailorShops(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, index) {
+                          AllTailorsShopDetails
+                              shopDeAllTailorsShopDetailstails =
+                              snapshot.data[index];
+
+                          return tailorshop(shopDeAllTailorsShopDetailstails);
+                        },
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  },
+                )),
             SizedBox(
               height: 200,
               width: 90,
@@ -331,7 +345,9 @@ class _buyerHomePageState extends State<buyerHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => serviceShops(),
+                          builder: (context) => serviceShops(
+                            userDetails: widget.userDetails,
+                          ),
                         ));
                   },
                   child: Text("SERVICES",
@@ -344,6 +360,58 @@ class _buyerHomePageState extends State<buyerHomePage> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  tailorshop(AllTailorsShopDetails shopDetails) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Container(
+        width: MediaQuery.of(context).size.width / 3 + 80,
+        height: 160,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(topRight: Radius.circular(80)),
+            gradient: LinearGradient(
+                begin: FractionalOffset(0, 0),
+                end: FractionalOffset(1, 0),
+                stops: [0, 1],
+                colors: [color4, buttonColor],
+                tileMode: TileMode.clamp)),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 5, bottom: 30),
+            child: Column(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    basicUrl + "${shopDetails.tsImage}",
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Text(shopDetails.tsName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(shopDetails.tsDescription,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

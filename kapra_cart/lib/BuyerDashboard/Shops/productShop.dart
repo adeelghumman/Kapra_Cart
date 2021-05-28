@@ -11,7 +11,7 @@ import 'package:kapra_cart/customWidgets/customDrawer.dart';
 import 'package:kapra_cart/BuyerDashboard/productDetailsPage.dart';
 
 import 'dart:ui';
- 
+
 import 'backgroundCurveLayout.dart';
 
 class productShop extends StatefulWidget {
@@ -118,26 +118,29 @@ class _productShopState extends State<productShop> {
   }
 
   shoplist() {
-    return SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: FutureBuilder(
-          future: fetchAllShops(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                // scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, index) {
-                  ShopDetails shopDetails = snapshot.data[index];
+    return Padding(
+      padding: const EdgeInsets.only(top: 22.0),
+      child: SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: FutureBuilder(
+            future: fetchAllShops(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: snapshot.data.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, index) {
+                    ShopDetails shopDetails = snapshot.data[index];
 
-                  return shops(shopDetails);
-                },
-              );
-            }
-            return CircularProgressIndicator();
-          },
-        ));
+                    return shops(shopDetails);
+                  },
+                );
+              }
+              return CircularProgressIndicator();
+            },
+          )),
+    );
   }
 
   shops(ShopDetails shopDetails) {

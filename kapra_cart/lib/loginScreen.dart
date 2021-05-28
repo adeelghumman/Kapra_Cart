@@ -10,6 +10,8 @@ import 'package:kapra_cart/TailorDashboard/tailorHomePage.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:http/http.dart' as http;
 
+import 'TailorDashboard/addTailorShopDetails.dart';
+
 class loginScreen extends StatefulWidget {
   roleOfUser userRole;
 
@@ -188,6 +190,21 @@ class _loginScreenState extends State<loginScreen> {
             MaterialPageRoute(
               builder: (context) => ShopkeeperHomePage(
                 shopkeeperDetails: user,
+              ),
+            ));
+      }
+    }
+    if (user.message == "true" && tablename == "tailor") {
+      constants.sharedPreferences.setBool('tailor', true);
+      constants.sharedPreferences.setString('email', user.email);
+      constants.sharedPreferences.setString('password', user.password);
+
+      if (tablename == "tailor") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TailorHomePage(
+                tailordetails: user,
               ),
             ));
       }

@@ -7,21 +7,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/shopDetailsModelClass.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/shopkeeperHomePage.dart';
+import 'package:kapra_cart/TailorDashboard/tailorHomePage.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customWidgets/customAppbar.dart';
 import 'package:kapra_cart/customWidgets/customButton.dart';
 import 'package:http/http.dart' as http;
 
-class AddShopDetails extends StatefulWidget {
+class AddTailorShopDetails extends StatefulWidget {
   final String email;
   final String password;
 
-  const AddShopDetails({Key key, this.email, this.password}) : super(key: key);
+  const AddTailorShopDetails({Key key, this.email, this.password})
+      : super(key: key);
   @override
-  _AddShopDetailsState createState() => _AddShopDetailsState();
+  _AddTailorShopDetailsState createState() => _AddTailorShopDetailsState();
 }
 
-class _AddShopDetailsState extends State<AddShopDetails> {
+class _AddTailorShopDetailsState extends State<AddTailorShopDetails> {
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   TextEditingController name = TextEditingController();
   TextEditingController address = TextEditingController();
@@ -32,9 +34,9 @@ class _AddShopDetailsState extends State<AddShopDetails> {
   Future<File> file;
   String base64Image;
   File tempFile;
-  var sk_id;
+  var t_id;
   var shop_id;
-  loginUserModelClass shopKeeperdetails;
+  loginUserModelClass tailorDetails;
   String status = "";
   String errormessage = "Error in uploading image";
 
@@ -335,7 +337,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
                 }
               },
               child: CustomButton(
-                buttonName: "Add Shop",
+                buttonName: "Add Tailor Shop",
               ),
             ),
           ),
@@ -345,15 +347,15 @@ class _AddShopDetailsState extends State<AddShopDetails> {
   }
 
   void uploadShopDetails() async {
-    var response = await http.post(basicUrl + "uploadShopDetails.php", body: {
+    var response =
+        await http.post(basicUrl + "uploadTailorShopDetails.php", body: {
       'name': name.text,
       'address': address.text,
       'phone': phone.text,
       'city': city.text,
-      'category': shopType,
       'image': tempFile.path.split("/").last,
       'description': description.text,
-      'sk_id': sk_id,
+      't_id': t_id,
     });
 
     print(response.body);
@@ -409,10 +411,10 @@ class _AddShopDetailsState extends State<AddShopDetails> {
     final response = await http.post(basicUrl + "checkUser.php", body: {
       'email': widget.email,
       'password': widget.password,
-      'table': "shopkeeper"
+      'table': "tailor"
     });
-    shopKeeperdetails = loginUserModelClass.fromjson(jsonDecode(response.body));
-    sk_id = shopKeeperdetails.id;
+    tailorDetails = loginUserModelClass.fromjson(jsonDecode(response.body));
+    t_id = tailorDetails.id;
   }
 
   void setstatus(String message) {

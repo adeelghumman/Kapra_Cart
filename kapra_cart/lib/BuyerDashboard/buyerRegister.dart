@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/roleOfUser.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/addShopDetails.dart';
+import 'package:kapra_cart/TailorDashboard/addTailorShopDetails.dart';
 import '../constant.dart';
 
 class buyerRegiterScreen extends StatefulWidget {
@@ -165,6 +166,16 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AddShopDetails(
+                                  email: email.text,
+                                  password: password.text,
+                                ),
+                              ));
+                        }
+                        if (widget.userRole.currentRoleOfUser == "Tailor") {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddTailorShopDetails(
                                   email: email.text,
                                   password: password.text,
                                 ),

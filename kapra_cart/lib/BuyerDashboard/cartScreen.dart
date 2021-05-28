@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/API/cartProducts.dart';
 import 'package:kapra_cart/BuyerDashboard/Shops/shopsHomepageBuyer.dart';
+import 'package:kapra_cart/BuyerDashboard/paypalPayment.dart';
 import 'package:kapra_cart/Constants/light_color.dart';
 import 'package:kapra_cart/Constants/theme.dart';
 import 'package:kapra_cart/ModelClasses/allShopsModelClass.dart';
+import 'package:kapra_cart/ModelClasses/everyNewOrderItemDetails.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/product.dart';
 import 'package:kapra_cart/customWidgets/title_text.dart';
@@ -35,6 +38,9 @@ class _CartScreenState extends State<CartScreen> {
   int noOfDisplay = 0;
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
+  List<EveryNewOrderItemDetails> itemDetailList = [];
+  String orderId;
+
   @override
   Widget build(BuildContext context) {
     // return WillPopScope(
@@ -58,6 +64,18 @@ class _CartScreenState extends State<CartScreen> {
               itemCount: widget.cart.products.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, index) {
+                EveryNewOrderItemDetails newOrderItemDetails =
+                    EveryNewOrderItemDetails(
+                        widget.cart.products[index][4],
+                        widget.cart.products[index][1],
+                        widget.cart.products[index][2],
+                        widget.cart.products[index][3]);
+
+                itemDetailList.add(newOrderItemDetails);
+                print(itemDetailList[index].itemId + "   ");
+
+                getLastOrderId();
+
                 return cartItems(widget.cart.products[index], index);
               },
             )),
@@ -198,9 +216,15 @@ class _CartScreenState extends State<CartScreen> {
     return FlatButton(
         onPressed: () {
           int bill = widget.cart.totalBill();
+
           uploadOrderDetails(bill);
-          print(widget.shopDetails.sId);
-          print(widget.cart.totalBill());
+          Timer(Duration(seconds: 3), () {
+            for (int i = 0; i < itemDetailList.length; i++) {
+              uploadItemDetails(itemDetailList[i].itemId,
+                  itemDetailList[i].price, itemDetailList[i].name);
+            }
+            ;
+          });
           _scaffoldkey.currentState.showSnackBar(
               SnackBar(content: Text("Order Placed successfully")));
 
@@ -243,11 +267,20 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Payment Methods ",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaypalPayment(),
+                        ));
+                  },
+                  child: Text("Payment Methods ",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
+                ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width / 3 + 10,
@@ -326,6 +359,25 @@ class _CartScreenState extends State<CartScreen> {
       'ProductsBill': bill.toString(),
       'ProductIds': "adeel",
       'PaymentMethod': "COD"
+    });
+    print(response.body);
+  }
+
+  void getLastOrderId() async {
+    final response = await http.post(basicUrl + "getlastaffectedoderrow.php");
+    List id = [];
+    id = jsonDecode(response.body);
+    orderId = id[0];
+    print(id[0]);
+  }
+
+  void uploadItemDetails(productid, price, name) async {
+    final response = await http.post(basicUrl + "OrderItemDetails.php", body: {
+      'orderId': orderId,
+      'productId': productid,
+      'price': price,
+      "productName": name,
+      "quantity": "1"
     });
     print(response.body);
   }

@@ -1,38 +1,35 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/BuyerDashboard/measurementScreen.dart';
+
 import 'package:kapra_cart/Constants/light_color.dart';
 import 'package:kapra_cart/Constants/theme.dart';
-import 'package:kapra_cart/ModelClasses/buyerModelClass.dart';
+import 'package:kapra_cart/ModelClasses/allServices.dart';
+import 'package:kapra_cart/ModelClasses/allTailorShopDetails.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
-import 'package:kapra_cart/ModelClasses/oderModelClass.dart';
+import 'package:kapra_cart/ModelClasses/product.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customWidgets/title_text.dart';
 import 'package:kapra_cart/data/data.dart';
-import 'package:http/http.dart' as http;
 
-class OderDetailsScreenShopkeeper extends StatefulWidget {
-  final int count;
-  final OrderDetails orderDetails;
-  final loginUserModelClass buyer;
-
-  const OderDetailsScreenShopkeeper(
-      {Key key, this.count, this.orderDetails, this.buyer})
+class ServiceDetailPage extends StatefulWidget {
+  final AllServices serviceDetails;
+  final AllTailorsShopDetails tailorshopDetails;
+  final loginUserModelClass userDetails;
+  ServiceDetailPage(
+      {Key key, this.serviceDetails, this.tailorshopDetails, this.userDetails})
       : super(key: key);
+
   @override
-  _OderDetailsScreenShopkeeperState createState() =>
-      _OderDetailsScreenShopkeeperState();
+  _ServiceDetailPageState createState() => _ServiceDetailPageState();
 }
 
-class _OderDetailsScreenShopkeeperState
-    extends State<OderDetailsScreenShopkeeper> with TickerProviderStateMixin {
+class _ServiceDetailPageState extends State<ServiceDetailPage>
+    with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> animation;
-
   @override
   void initState() {
     super.initState();
-
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     animation = Tween<double>(begin: 0, end: 1).animate(
@@ -125,8 +122,7 @@ class _OderDetailsScreenShopkeeperState
             fontSize: 80,
             color: LightColor.lightGrey,
           ),
-          // Image.network(
-          //     "http://t3.gstatic.com/licensed-image?q=tbn:ANd9GcRhOhUYXfsabtCJ9o62_HqJ7-qnaLHTnud7NLKk-1PRFWZO9ba-38vmPI7oNJHaEHpi2_xuQIy29jqIctZME0A")
+          Image.network(imageUrl + "${widget.serviceDetails.seImage}")
         ],
       ),
     );
@@ -209,8 +205,7 @@ class _OderDetailsScreenShopkeeperState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       TitleText(
-                          text: "Order # " + widget.count.toString(),
-                          fontSize: 25),
+                          text: widget.serviceDetails.seName, fontSize: 25),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
@@ -220,28 +215,27 @@ class _OderDetailsScreenShopkeeperState
                               TitleText(
                                 text: "PKR ",
                                 fontSize: 18,
-                                color: Colors.blue[400],
+                                color: LightColor.red,
                               ),
                               TitleText(
-                                text:
-                                    widget.orderDetails.productsBill.toString(),
+                                text: widget.serviceDetails.sePrice,
                                 fontSize: 25,
                               ),
                             ],
                           ),
-                          // Row(
-                          //   children: <Widget>[
-                          //     Icon(Icons.star,
-                          //         color: LightColor.yellowColor, size: 17),
-                          //     Icon(Icons.star,
-                          //         color: LightColor.yellowColor, size: 17),
-                          //     Icon(Icons.star,
-                          //         color: LightColor.yellowColor, size: 17),
-                          //     Icon(Icons.star,
-                          //         color: LightColor.yellowColor, size: 17),
-                          //     Icon(Icons.star_border, size: 17),
-                          //   ],
-                          // ),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.star,
+                                  color: LightColor.yellowColor, size: 17),
+                              Icon(Icons.star,
+                                  color: LightColor.yellowColor, size: 17),
+                              Icon(Icons.star,
+                                  color: LightColor.yellowColor, size: 17),
+                              Icon(Icons.star,
+                                  color: LightColor.yellowColor, size: 17),
+                              Icon(Icons.star_border, size: 17),
+                            ],
+                          ),
                         ],
                       ),
                     ],
@@ -260,20 +254,32 @@ class _OderDetailsScreenShopkeeperState
                 ),
                 _description(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Container(
-                    width: 300,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: buttonColor,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Center(
-                      child: Text("View item details",
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )),
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MeasurementScreen(
+                                serviceDetails: widget.serviceDetails,
+                                tailorshopDetails: widget.tailorshopDetails,
+                                userDetails: widget.userDetails),
+                          ));
+                    },
+                    child: Container(
+                      width: 300,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Center(
+                        child: Text("Continue with measurements",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )),
+                      ),
                     ),
                   ),
                 )
@@ -346,40 +352,11 @@ class _OderDetailsScreenShopkeeperState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         TitleText(
-          text: "Customer Details ",
-          fontSize: 20,
-          color: Colors.blue[400],
-        ),
-        SizedBox(height: 20),
-        TitleText(
-          text: "Customer Name",
+          text: "Product Description",
           fontSize: 14,
         ),
-        Center(child: Text(widget.buyer.name.toString())),
         SizedBox(height: 20),
-        TitleText(
-          text: "Customer E-mail",
-          fontSize: 14,
-        ),
-        Center(child: Text(widget.buyer.email.toString())),
-        SizedBox(height: 20),
-        TitleText(
-          text: "Customer Phone#",
-          fontSize: 14,
-        ),
-        Center(child: Text(widget.buyer.phone.toString())),
-        SizedBox(height: 20),
-        TitleText(
-          text: "Address",
-          fontSize: 14,
-        ),
-        Center(child: Text(widget.buyer.address.toString())),
-        SizedBox(height: 20),
-        TitleText(
-          text: "Pyment Method",
-          fontSize: 14,
-        ),
-        Center(child: Text(widget.orderDetails.paymentMethod.toString())),
+        Text(widget.serviceDetails.seDescription),
       ],
     );
   }

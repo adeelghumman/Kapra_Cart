@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/API/allShopsApi.dart';
 import 'package:kapra_cart/API/productApi.dart';
+import 'package:kapra_cart/API/servicesApi.dart';
+import 'package:kapra_cart/BuyerDashboard/Shops/serviceDetailpage.dart';
 import 'package:kapra_cart/BuyerDashboard/cart.dart';
 import 'package:kapra_cart/BuyerDashboard/cartScreen.dart';
 import 'package:kapra_cart/Constants/light_color.dart';
+import 'package:kapra_cart/ModelClasses/allServices.dart';
 
 import 'package:kapra_cart/ModelClasses/allShopsModelClass.dart';
+import 'package:kapra_cart/ModelClasses/allTailorShopDetails.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/product.dart';
 
 import '../../constant.dart';
 import '../productDetailsPage.dart';
 
-class ShopsHomepage_forBuyer extends StatefulWidget {
-  final ShopDetails shopDetails;
+class TailorHomepage_forBuyer extends StatefulWidget {
+  final AllTailorsShopDetails tailorshopDetails;
   final loginUserModelClass userDetails;
 
-  const ShopsHomepage_forBuyer({Key key, this.shopDetails, this.userDetails})
+  const TailorHomepage_forBuyer(
+      {Key key, this.tailorshopDetails, this.userDetails})
       : super(key: key);
 
   @override
-  _ShopsHomepage_forBuyerState createState() => _ShopsHomepage_forBuyerState();
+  _TailorHomepage_forBuyerState createState() =>
+      _TailorHomepage_forBuyerState();
 }
 
-class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
+class _TailorHomepage_forBuyerState extends State<TailorHomepage_forBuyer> {
   int noOfCartItems = 0;
 
   Cart cart = new Cart();
@@ -32,29 +38,6 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: layout(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CartScreen(
-                  cart: cart,
-                  shopDetails: widget.shopDetails,
-                  userDetails: widget.userDetails,
-                ),
-              ));
-        },
-        backgroundColor: LightColor.orange,
-        child: Column(
-          children: [
-            Text(noOfCartItems.toString()),
-            Icon(Icons.shopping_basket,
-                color: Theme.of(context)
-                    .floatingActionButtonTheme
-                    .backgroundColor),
-          ],
-        ),
-      ),
     );
   }
 
@@ -62,19 +45,31 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
     return Container(
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          //crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             SizedBox(
-              height: 25,
+              height: 30,
             ),
-            SizedBox(
-              height: 10,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width / 3,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(50)),
+              child: Center(
+                child: Text(widget.tailorshopDetails.tsName.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )),
+              ),
             ),
-            products(widget.shopDetails),
+
+            // products(widget.shopDetails),
             SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: FutureBuilder(
-                  future: fetchProducts("none", widget.shopDetails.sId),
+                  future: fetchServices(widget.tailorshopDetails.tId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return GridView.builder(
@@ -84,10 +79,10 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
                         itemCount: snapshot.data.length,
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, index) {
-                          Product shopDetails = snapshot.data[index];
+                          AllServices services = snapshot.data[index];
 
                           return itemCard(
-                            shopDetails,
+                            services,
                           );
                         },
                       );
@@ -174,19 +169,21 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
     );
   }
 
-  itemCard(Product shopDetails) {
+  itemCard(AllServices service) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
           onTap: () {
+            print(widget.userDetails.id);
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductDetailPage(
-                    shopDetails: shopDetails,
-                  ),
+                  builder: (context) => ServiceDetailPage(
+                      serviceDetails: service,
+                      tailorshopDetails: widget.tailorshopDetails,
+                      userDetails: widget.userDetails),
                 ));
           },
           child: Container(
@@ -195,41 +192,41 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
               decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(16)),
-              child: Image.network(imageUrl + "${shopDetails.pImage}")),
+              child: Image.network(imageUrl + "${service.seImage}")),
         ),
         Row(
           children: [
             Column(
               children: [
                 Text(
-                  shopDetails.pName.toUpperCase(),
+                  service.seName.toUpperCase(),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 Text(
-                  shopDetails.pPrice.toString(),
+                  service.sePrice.toString(),
                   style: TextStyle(fontSize: 18),
                 )
               ],
             ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  noOfCartItems++;
-                  cart.addProductInCart(shopDetails.pId, shopDetails.pName,
-                      shopDetails.pPrice, shopDetails.pImage);
-                  print(cart.products);
-                });
-              },
-              child: Container(
-                child: Center(child: Text("Cart me")),
-                height: 25,
-                width: 75,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueAccent),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     setState(() {
+            //       noOfCartItems++;
+            //       cart.addProductInCart(shopDetails.pId, shopDetails.pName,
+            //           shopDetails.pPrice, shopDetails.pImage);
+            //       print(cart.products);
+            //     });
+            //   },
+            //   child: Container(
+            //     child: Center(child: Text("Cart me")),
+            //     height: 25,
+            //     width: 75,
+            //     decoration: BoxDecoration(
+            //         border: Border.all(color: Colors.blueAccent),
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.circular(20)),
+            //   ),
+            // ),
           ],
         ),
       ],
