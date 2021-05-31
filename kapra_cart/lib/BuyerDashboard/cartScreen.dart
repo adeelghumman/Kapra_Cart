@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/API/cartProducts.dart';
 import 'package:kapra_cart/BuyerDashboard/Shops/shopsHomepageBuyer.dart';
+import 'package:kapra_cart/BuyerDashboard/choiceMakingScreen.dart';
 import 'package:kapra_cart/BuyerDashboard/paypalPayment.dart';
 import 'package:kapra_cart/Constants/light_color.dart';
 import 'package:kapra_cart/Constants/theme.dart';
@@ -116,7 +117,7 @@ class _CartScreenState extends State<CartScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
                     child: Image.network(
-                      imageUrl + "${product[3]}",
+                      basicUrl + "${product[3]}",
                       height: 100,
                       width: 100,
                       fit: BoxFit.fill,
@@ -229,7 +230,13 @@ class _CartScreenState extends State<CartScreen> {
               SnackBar(content: Text("Order Placed successfully")));
 
           Timer(Duration(seconds: 3), () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChoiceMaking(
+                    userDetails: widget.userDetails,
+                  ),
+                ));
           });
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -293,30 +300,6 @@ class _CartScreenState extends State<CartScreen> {
                 width: 30,
                 height: 30,
               ))
-            ],
-          ),
-          Divider(
-            height: 20,
-            thickness: 1,
-          ),
-          Row(
-            children: [
-              Image(
-                image: AssetImage("Asset/gpay2.png"),
-                height: 30,
-                width: 50,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Text("Google Pay ",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold)),
-                ),
-              ),
             ],
           ),
           Divider(

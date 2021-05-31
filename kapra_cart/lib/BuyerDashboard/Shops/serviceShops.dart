@@ -177,7 +177,7 @@ class _serviceShopsState extends State<serviceShops> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
-                        imageUrl + "${shopDetails.tsImage}",
+                        basicUrl + "${shopDetails.tsImage}",
                         height: 100,
                         width: 100,
                         fit: BoxFit.fill,

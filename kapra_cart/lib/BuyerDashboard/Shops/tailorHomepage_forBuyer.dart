@@ -154,7 +154,7 @@ class _TailorHomepage_forBuyerState extends State<TailorHomepage_forBuyer> {
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
                     child: Image.network(
-                      imageUrl + "${shopDetails.sImage}",
+                      basicUrl + "${shopDetails.sImage}",
                       height: 100,
                       width: 100,
                       fit: BoxFit.fill,
@@ -192,7 +192,7 @@ class _TailorHomepage_forBuyerState extends State<TailorHomepage_forBuyer> {
               decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(16)),
-              child: Image.network(imageUrl + "${service.seImage}")),
+              child: Image.network(basicUrl + "${service.seImage}")),
         ),
         Row(
           children: [

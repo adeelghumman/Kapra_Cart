@@ -1,28 +1,39 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:kapra_cart/Constants/light_color.dart';
 import 'package:kapra_cart/Constants/theme.dart';
-import 'package:kapra_cart/ModelClasses/product.dart';
+import 'package:kapra_cart/ModelClasses/buyerModelClass.dart';
+import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
+import 'package:kapra_cart/ModelClasses/oderModelClass.dart';
+import 'package:kapra_cart/ModelClasses/serviceOrderModelClass.dart';
+import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customWidgets/title_text.dart';
 import 'package:kapra_cart/data/data.dart';
+import 'package:http/http.dart' as http;
 
-import '../constant.dart';
+class OderDetailsScreenTailor extends StatefulWidget {
+  final int count;
+  final ServicesOrderDetails servicesOrderDetails;
+  final loginUserModelClass buyer;
 
-class ProductDetailPage extends StatefulWidget {
-  final Product shopDetails;
-  ProductDetailPage({Key key, this.shopDetails}) : super(key: key);
-
+  const OderDetailsScreenTailor(
+      {Key key, this.count, this.buyer, this.servicesOrderDetails})
+      : super(key: key);
   @override
-  _ProductDetailPageState createState() => _ProductDetailPageState();
+  _OderDetailsScreenTailorState createState() =>
+      _OderDetailsScreenTailorState();
 }
 
-class _ProductDetailPageState extends State<ProductDetailPage>
+class _OderDetailsScreenTailorState extends State<OderDetailsScreenTailor>
     with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> animation;
+
   @override
   void initState() {
     super.initState();
+
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     animation = Tween<double>(begin: 0, end: 1).animate(
@@ -115,7 +126,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             fontSize: 80,
             color: LightColor.lightGrey,
           ),
-          Image.network(basicUrl + "${widget.shopDetails.pImage}")
+          // Image.network(
+          //     "http://t3.gstatic.com/licensed-image?q=tbn:ANd9GcRhOhUYXfsabtCJ9o62_HqJ7-qnaLHTnud7NLKk-1PRFWZO9ba-38vmPI7oNJHaEHpi2_xuQIy29jqIctZME0A")
         ],
       ),
     );
@@ -177,7 +189,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           child: SingleChildScrollView(
             controller: scrollController,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 SizedBox(height: 5),
@@ -197,37 +209,40 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      TitleText(text: widget.shopDetails.pName, fontSize: 25),
+                      TitleText(
+                          text: "Order # " + widget.count.toString(),
+                          fontSize: 25),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              TitleText(
-                                text: "PKR ",
-                                fontSize: 18,
-                                color: LightColor.red,
-                              ),
-                              TitleText(
-                                text: widget.shopDetails.pPrice,
-                                fontSize: 25,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.star,
-                                  color: LightColor.yellowColor, size: 17),
-                              Icon(Icons.star,
-                                  color: LightColor.yellowColor, size: 17),
-                              Icon(Icons.star,
-                                  color: LightColor.yellowColor, size: 17),
-                              Icon(Icons.star,
-                                  color: LightColor.yellowColor, size: 17),
-                              Icon(Icons.star_border, size: 17),
-                            ],
-                          ),
+                          // Row(
+                          //   crossAxisAlignment: CrossAxisAlignment.center,
+                          //   children: <Widget>[
+                          //     TitleText(
+                          //       text: "PKR ",
+                          //       fontSize: 18,
+                          //       color: Colors.blue[400],
+                          //     ),
+                          //     TitleText(
+                          //       text:
+                          //           widget.servicesOrderDetails,
+                          //       fontSize: 25,
+                          //     ),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: <Widget>[
+                          //     Icon(Icons.star,
+                          //         color: LightColor.yellowColor, size: 17),
+                          //     Icon(Icons.star,
+                          //         color: LightColor.yellowColor, size: 17),
+                          //     Icon(Icons.star,
+                          //         color: LightColor.yellowColor, size: 17),
+                          //     Icon(Icons.star,
+                          //         color: LightColor.yellowColor, size: 17),
+                          //     Icon(Icons.star_border, size: 17),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ],
@@ -245,6 +260,24 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                   height: 20,
                 ),
                 _description(),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8.0),
+                //   child: Container(
+                //     width: 300,
+                //     height: 50,
+                //     decoration: BoxDecoration(
+                //         color: buttonColor,
+                //         borderRadius: BorderRadius.circular(50)),
+                //     child: Center(
+                //       child: Text("View item details",
+                //           style: TextStyle(
+                //             fontSize: 17,
+                //             fontWeight: FontWeight.bold,
+                //             color: Colors.white,
+                //           )),
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ),
@@ -314,28 +347,47 @@ class _ProductDetailPageState extends State<ProductDetailPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         TitleText(
-          text: "Product Description",
-          fontSize: 14,
+          text: "Customer Details ",
+          fontSize: 20,
+          color: Colors.blue[400],
         ),
         SizedBox(height: 20),
-        Text(widget.shopDetails.pDescription),
+        TitleText(
+          text: "Customer Name",
+          fontSize: 14,
+        ),
+        Center(child: Text(widget.buyer.name.toString())),
+        SizedBox(height: 20),
+        TitleText(
+          text: "Customer E-mail",
+          fontSize: 14,
+        ),
+        Center(child: Text(widget.buyer.email.toString())),
+        SizedBox(height: 20),
+        TitleText(
+          text: "Customer Phone#",
+          fontSize: 14,
+        ),
+        Center(child: Text(widget.buyer.phone.toString())),
+        SizedBox(height: 20),
+        TitleText(
+          text: "Address",
+          fontSize: 14,
+        ),
+        Center(child: Text(widget.buyer.address.toString())),
+        SizedBox(height: 20),
+        TitleText(
+          text: "Pyment Method",
+          fontSize: 14,
+        ),
+        Center(child: Text(widget.toString())),
       ],
-    );
-  }
-
-  FloatingActionButton _flotingButton() {
-    return FloatingActionButton(
-      onPressed: () {},
-      backgroundColor: LightColor.orange,
-      child: Icon(Icons.shopping_basket,
-          color: Theme.of(context).floatingActionButtonTheme.backgroundColor),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _flotingButton(),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(

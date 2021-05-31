@@ -122,7 +122,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             fontSize: 80,
             color: LightColor.lightGrey,
           ),
-          Image.network(imageUrl + "${widget.serviceDetails.seImage}")
+          Image.network(basicUrl + "${widget.serviceDetails.seImage}")
         ],
       ),
     );

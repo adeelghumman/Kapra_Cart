@@ -265,7 +265,7 @@ class _buyerHomePageState extends State<buyerHomePage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.network(
-                    imageUrl + "${shopDetails.sImage}",
+                    basicUrl + "${shopDetails.sImage}",
                     height: 100,
                     width: 100,
                     fit: BoxFit.fill,

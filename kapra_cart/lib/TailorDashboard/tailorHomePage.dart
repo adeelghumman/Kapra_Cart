@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/tailorShopDetailsModelClass.dart';
 import 'package:kapra_cart/TailorDashboard/allServiceScreen.dart';
+import 'package:kapra_cart/TailorDashboard/tailorOrderScreen.dart';
 import 'package:kapra_cart/customWidgets/clayContainer.dart';
 import 'package:http/http.dart' as http;
 
@@ -48,7 +49,7 @@ class _TailorHomePageState extends State<TailorHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.tailordetails.name,
+                          widget.tailordetails.name.toUpperCase(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -137,7 +138,7 @@ class _TailorHomePageState extends State<TailorHomePage> {
             height: 30,
           ),
           Text(
-            widget.tailordetails.name,
+            widget.tailordetails.name.toUpperCase(),
             style: TextStyle(
                 fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
           ),
@@ -206,13 +207,13 @@ class _TailorHomePageState extends State<TailorHomePage> {
             borderRadius: BorderRadius.circular(30),
             child: GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => OrdersScrren(
-                //         shopId: shopId,
-                //       ),
-                //     ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TailorOrdersScrren(
+                        tailorshopId: tailorshopId,
+                      ),
+                    ));
               },
               child: Container(
                 child: Center(
@@ -285,6 +286,7 @@ class _TailorHomePageState extends State<TailorHomePage> {
                     elevation: 10,
                     child: GestureDetector(
                       onTap: () {
+                        print(t_id);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
