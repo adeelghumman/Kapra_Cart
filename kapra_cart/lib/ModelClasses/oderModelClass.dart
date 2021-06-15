@@ -7,14 +7,14 @@ String orderDetailsToJson(List<OrderDetails> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class OrderDetails {
-  OrderDetails({
-    this.orderId,
-    this.buyerId,
-    this.shopId,
-    this.productsBill,
-    this.productIds,
-    this.paymentMethod,
-  });
+  OrderDetails(
+      {this.orderId,
+      this.buyerId,
+      this.shopId,
+      this.productsBill,
+      this.productIds,
+      this.paymentMethod,
+      this.completed});
 
   String orderId;
   String buyerId;
@@ -22,15 +22,16 @@ class OrderDetails {
   String productsBill;
   String productIds;
   String paymentMethod;
+  int completed;
 
   factory OrderDetails.fromJson(Map<String, dynamic> json) => OrderDetails(
-        orderId: json["orderId"],
-        buyerId: json["buyerId"],
-        shopId: json["shopId"],
-        productsBill: json["ProductsBill"],
-        productIds: json["ProductIds"],
-        paymentMethod: json["PaymentMethod"],
-      );
+      orderId: json["orderId"],
+      buyerId: json["buyerId"],
+      shopId: json["shopId"],
+      productsBill: json["ProductsBill"],
+      productIds: json["ProductIds"],
+      paymentMethod: json["PaymentMethod"],
+      completed: json["completed"]);
 
   Map<String, dynamic> toJson() => {
         "orderId": orderId,
@@ -39,5 +40,6 @@ class OrderDetails {
         "ProductsBill": productsBill,
         "ProductIds": productIds,
         "PaymentMethod": paymentMethod,
+        "completed": completed
       };
 }

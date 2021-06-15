@@ -30,7 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   carousel_pro: ^1.0.0
   image_picker: ^0.6.7+21
-  http: ^0.12.2
+  http: 
   shared_preferences: ^0.5.12+4
   clay_containers: ^0.3.2
   google_fonts: ^0.3.9
