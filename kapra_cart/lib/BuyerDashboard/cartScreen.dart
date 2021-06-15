@@ -41,6 +41,7 @@ class _CartScreenState extends State<CartScreen> {
 
   List<EveryNewOrderItemDetails> itemDetailList = [];
   String orderId;
+  String a;
 
   @override
   Widget build(BuildContext context) {
@@ -234,8 +235,8 @@ class _CartScreenState extends State<CartScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChoiceMaking(
-                    userDetails: widget.userDetails,
-                  ),
+                      userDetails: widget.userDetails,
+                      lastProductOrderPlcedId: a),
                 ));
           });
         },
@@ -351,12 +352,14 @@ class _CartScreenState extends State<CartScreen> {
     List id = [];
     id = jsonDecode(response.body);
     orderId = id[0];
+    int orderid = int.parse(orderId) + 1;
+    a = orderid.toString();
     print(id[0]);
   }
 
   void uploadItemDetails(productid, price, name) async {
     final response = await http.post(basicUrl + "OrderItemDetails.php", body: {
-      'orderId': orderId,
+      'orderId': a,
       'productId': productid,
       'price': price,
       "productName": name,

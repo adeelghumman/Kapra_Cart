@@ -15,8 +15,15 @@ class ServiceDetailPage extends StatefulWidget {
   final AllServices serviceDetails;
   final AllTailorsShopDetails tailorshopDetails;
   final loginUserModelClass userDetails;
+  final int availBothService;
+  final String lastProductOrderPlcedId;
   ServiceDetailPage(
-      {Key key, this.serviceDetails, this.tailorshopDetails, this.userDetails})
+      {Key key,
+      this.serviceDetails,
+      this.tailorshopDetails,
+      this.userDetails,
+      this.availBothService,
+      this.lastProductOrderPlcedId})
       : super(key: key);
 
   @override
@@ -261,6 +268,9 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                           context,
                           MaterialPageRoute(
                             builder: (context) => MeasurementScreen(
+                                availBothService: widget.availBothService,
+                                lastProductOrderPlcedId:
+                                    widget.lastProductOrderPlcedId,
                                 serviceDetails: widget.serviceDetails,
                                 tailorshopDetails: widget.tailorshopDetails,
                                 userDetails: widget.userDetails),

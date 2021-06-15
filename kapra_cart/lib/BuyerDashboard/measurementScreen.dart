@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -21,6 +22,9 @@ class MeasurementScreen extends StatefulWidget {
   final AllServices serviceDetails;
   final AllTailorsShopDetails tailorshopDetails;
   final loginUserModelClass userDetails;
+  ////////////////////////////////////////
+  final int availBothService;
+  final String lastProductOrderPlcedId;
 
   const MeasurementScreen(
       {Key key,
@@ -28,7 +32,9 @@ class MeasurementScreen extends StatefulWidget {
       this.password,
       this.serviceDetails,
       this.tailorshopDetails,
-      this.userDetails})
+      this.userDetails,
+      this.availBothService,
+      this.lastProductOrderPlcedId})
       : super(key: key);
   @override
   _MeasurementScreenState createState() => _MeasurementScreenState();
@@ -50,6 +56,9 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
   TextEditingController shouldertowaist = TextEditingController();
   TextEditingController waisttoaboveknee = TextEditingController();
   TextEditingController description = TextEditingController();
+
+  String orderId;
+  String a = "";
 
   String measurements;
 
@@ -349,8 +358,18 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                         "+" +
                         waisttoaboveknee.text;
 
+                    getLastOrderId();
+
                     uploadServiceorderDetails(measurements);
                     ////////////////////////////// add SK_ID and S_ID to shopkeeper and shop details.
+                    //
+                    if (widget.availBothService == 1) {
+                      Timer(Duration(seconds: 2), () {
+                        /////////////////////code for managing  both product and servicesw along wit
+                        uploadCombineOrderdetails();
+                      });
+                    }
+
                     _scaffoldState.currentState
                         .showSnackBar(SnackBar(content: Text("orderplaced ")));
 
@@ -376,6 +395,17 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
         )
       ],
     );
+  }
+
+  void getLastOrderId() async {
+    final response =
+        await http.post(basicUrl + "getlastaffectedoderrow_services.php");
+    List id = [];
+    id = jsonDecode(response.body);
+    orderId = id[0];
+    int orderid = int.parse(orderId) + 1;
+    a = orderid.toString();
+    print(id[0]);
   }
 
   void uploadServiceorderDetails(String measurements) async {
@@ -416,6 +446,16 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   void setstatus(String message) {
     status = message;
+  }
+
+  void uploadCombineOrderdetails() async {
+    var response =
+        await http.post(basicUrl + "uploadCombineOrderId.php", body: {
+      'pOrderId': widget.lastProductOrderPlcedId,
+      'sOrderId': a,
+    });
+
+    print(response.body);
   }
 }
 

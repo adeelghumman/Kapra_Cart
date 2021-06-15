@@ -8,8 +8,10 @@ import 'package:kapra_cart/customWidgets/title_text.dart';
 
 class ChoiceMaking extends StatefulWidget {
   final loginUserModelClass userDetails;
+  final String lastProductOrderPlcedId;
 
-  const ChoiceMaking({Key key, this.userDetails}) : super(key: key);
+  const ChoiceMaking({Key key, this.userDetails, this.lastProductOrderPlcedId})
+      : super(key: key);
   @override
   _ChoiceMakingState createState() => _ChoiceMakingState();
 }
@@ -32,11 +34,16 @@ class _ChoiceMakingState extends State<ChoiceMaking> {
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                 child: GestureDetector(
                   onTap: () {
+                    print("lastProductOrderPlcedId" +
+                        widget.lastProductOrderPlcedId);
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => serviceShops(
                             userDetails: widget.userDetails,
+                            availBothService: 1,
+                            lastProductOrderPlcedId:
+                                widget.lastProductOrderPlcedId,
                           ),
                         ));
                   },

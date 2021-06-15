@@ -19,9 +19,15 @@ import '../productDetailsPage.dart';
 class TailorHomepage_forBuyer extends StatefulWidget {
   final AllTailorsShopDetails tailorshopDetails;
   final loginUserModelClass userDetails;
+  final int availBothService;
+  final String lastProductOrderPlcedId;
 
   const TailorHomepage_forBuyer(
-      {Key key, this.tailorshopDetails, this.userDetails})
+      {Key key,
+      this.tailorshopDetails,
+      this.userDetails,
+      this.availBothService,
+      this.lastProductOrderPlcedId})
       : super(key: key);
 
   @override
@@ -181,6 +187,8 @@ class _TailorHomepage_forBuyerState extends State<TailorHomepage_forBuyer> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ServiceDetailPage(
+                      availBothService: widget.availBothService,
+                      lastProductOrderPlcedId: widget.lastProductOrderPlcedId,
                       serviceDetails: service,
                       tailorshopDetails: widget.tailorshopDetails,
                       userDetails: widget.userDetails),

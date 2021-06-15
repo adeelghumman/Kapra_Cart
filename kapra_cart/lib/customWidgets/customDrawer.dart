@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
+import 'package:kapra_cart/ShopKeeperDashboard/profileScreen.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/loginScreen.dart';
 import 'package:kapra_cart/roleOptScreen.dart';
@@ -49,7 +50,17 @@ class _customDrawerState extends State<customDrawer> {
             ),
           ),
           ListTile(
-            leading: Text(widget.userDetails.address),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                      shopkeeperDetails: widget.userDetails,
+                      roleStatus: '1',
+                    ),
+                  ));
+            },
+            leading: Text("Profile"),
             trailing: Icon(Icons.supervised_user_circle),
           ),
           ListTile(

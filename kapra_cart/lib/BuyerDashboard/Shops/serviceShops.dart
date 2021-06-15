@@ -12,8 +12,11 @@ import 'backgroundCurveLayout.dart';
 
 class serviceShops extends StatefulWidget {
   loginUserModelClass userDetails;
+  final int availBothService;
+  final String lastProductOrderPlcedId;
 
-  serviceShops({this.userDetails});
+  serviceShops(
+      {this.userDetails, this.availBothService, this.lastProductOrderPlcedId});
   @override
   _serviceShopsState createState() => _serviceShopsState();
 }
@@ -52,12 +55,17 @@ class _serviceShopsState extends State<serviceShops> {
         children: [
           Padding(
               padding: EdgeInsets.only(left: 14, bottom: 10),
-              child: Text(
-                'Browse Shops',
-                style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+              child: GestureDetector(
+                onTap: () {
+                  print(widget.availBothService);
+                },
+                child: Text(
+                  'Browse Shops',
+                  style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
               )),
           Container(
             height: 20.0,
@@ -152,9 +160,10 @@ class _serviceShopsState extends State<serviceShops> {
               context,
               MaterialPageRoute(
                 builder: (context) => TailorHomepage_forBuyer(
-                  tailorshopDetails: shopDetails,
-                  userDetails: widget.userDetails,
-                ),
+                    tailorshopDetails: shopDetails,
+                    userDetails: widget.userDetails,
+                    availBothService: widget.availBothService,
+                    lastProductOrderPlcedId: widget.lastProductOrderPlcedId),
               ));
         },
         child: Container(

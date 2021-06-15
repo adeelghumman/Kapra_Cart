@@ -134,6 +134,7 @@ class _buyerHomePageState extends State<buyerHomePage> {
                   MaterialPageRoute(
                     builder: (context) => serviceShops(
                       userDetails: widget.userDetails,
+                      availBothService: 0,
                     ),
                   ));
             },
@@ -347,6 +348,7 @@ class _buyerHomePageState extends State<buyerHomePage> {
                         MaterialPageRoute(
                           builder: (context) => serviceShops(
                             userDetails: widget.userDetails,
+                            availBothService: 0,
                           ),
                         ));
                   },

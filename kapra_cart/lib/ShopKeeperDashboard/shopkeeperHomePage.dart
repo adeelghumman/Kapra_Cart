@@ -9,7 +9,7 @@ import 'package:kapra_cart/ModelClasses/shopDetailsModelClass.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/addProducts.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/ordersScreen.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/productScreen.dart';
-import 'package:kapra_cart/ShopKeeperDashboard/profileScreenShopkeeper.dart';
+import 'package:kapra_cart/ShopKeeperDashboard/profileScreen.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customWidgets/clayContainer.dart';
 
@@ -76,8 +76,9 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProfileScreenShopkeeper(
+                      builder: (context) => ProfileScreen(
                         shopkeeperDetails: widget.shopkeeperDetails,
+                        roleStatus: '2',
                       ),
                     ));
               },

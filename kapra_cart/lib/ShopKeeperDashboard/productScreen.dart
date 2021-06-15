@@ -85,7 +85,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(40),
                   child: Image.network(
-                    "http://192.168.18.13/kapraCartScript/${product.pImage}",
+                    basicUrl + "${product.pImage}",
                     height: 100,
                     width: 100,
                     fit: BoxFit.fill,

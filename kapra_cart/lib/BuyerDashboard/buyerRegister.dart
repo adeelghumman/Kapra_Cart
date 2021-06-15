@@ -255,7 +255,7 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
   }
 
   void upload(String filename) {
-    http.post("http://10.0.2.2/KapraCartScript/uploadImage.php",
+    http.post(basicUrl + "uploadImage.php",
         body: {"image": base64Image, "name": filename}).then((value) {
       setstatus(value.statusCode == 200 ? value.body : errormessage);
     }).catchError((error) {
@@ -265,7 +265,7 @@ class _buyerRegiterScreenState extends State<buyerRegiterScreen> {
 
   void registerBuyer(String name, String email, String password, String phone,
       String address, String filename, String table) {
-    http.post("http://10.0.2.2/KapraCartScript/registerUser.php", body: {
+    http.post(basicUrl + "registerUser.php", body: {
       'name': name,
       'email': email,
       'password': password,
