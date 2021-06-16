@@ -432,7 +432,7 @@ class _AddTailorShopDetailsState extends State<AddTailorShopDetails> {
   }
 
   void upload(String filename) {
-    http.post("http://10.0.2.2/KapraCartScript/uploadImage.php",
+    http.post(basicUrl + "uploadImage.php",
         body: {"image": base64Image, "name": filename}).then((value) {
       setstatus(value.statusCode == 200 ? value.body : errormessage);
     }).catchError((error) {

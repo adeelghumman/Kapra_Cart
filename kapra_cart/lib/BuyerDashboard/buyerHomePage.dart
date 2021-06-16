@@ -90,8 +90,10 @@ class _buyerHomePageState extends State<buyerHomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          productShop(userDetails: widget.userDetails),
+                      builder: (context) => productShop(
+                        userDetails: widget.userDetails,
+                        servicer: 0,
+                      ),
                     ));
               },
               child: Container(
@@ -129,14 +131,35 @@ class _buyerHomePageState extends State<buyerHomePage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => serviceShops(
-                      userDetails: widget.userDetails,
-                      availBothService: 0,
-                    ),
-                  ));
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Kapra Cart Services'),
+                    content: Text(
+                        "To avail Service have to visit Shops and Cart your Product"),
+                    actions: [
+                      FlatButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => productShop(
+                                    userDetails: widget.userDetails,
+                                    servicer: 1,
+                                  ),
+                                ));
+                          },
+                          child: Text("Yes")),
+                      FlatButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("No")),
+                    ],
+                  );
+                },
+              );
             },
             child: Container(
                 child: Padding(
@@ -204,6 +227,7 @@ class _buyerHomePageState extends State<buyerHomePage> {
                         MaterialPageRoute(
                           builder: (context) => productShop(
                             userDetails: widget.userDetails,
+                            servicer: 0,
                           ),
                         ));
                   },
@@ -343,14 +367,35 @@ class _buyerHomePageState extends State<buyerHomePage> {
               child: Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => serviceShops(
-                            userDetails: widget.userDetails,
-                            availBothService: 0,
-                          ),
-                        ));
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Kapra Cart Services'),
+                          content: Text(
+                              "To avail Service have to visit Shops and Cart your Product"),
+                          actions: [
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => productShop(
+                                          userDetails: widget.userDetails,
+                                          servicer: 1,
+                                        ),
+                                      ));
+                                },
+                                child: Text("Yes")),
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("No")),
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: Text("SERVICES",
                       style: TextStyle(

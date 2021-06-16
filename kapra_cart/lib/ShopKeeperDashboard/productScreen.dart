@@ -112,38 +112,20 @@ class _ProductScreenState extends State<ProductScreen> {
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "PKR ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 23,
-                                letterSpacing: 2),
-                          ),
-                          Text(
-                            product.pPrice,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 23,
-                                letterSpacing: 2),
-                          ),
-                        ],
-                      ),
+                    Column(
+                      children: [
+                        Text(
+                          "PKR " + product.pPrice,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23,
+                              letterSpacing: 2),
+                        ),
+                      ],
                     )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

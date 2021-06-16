@@ -296,7 +296,7 @@ class _AddProductsState extends State<AddProducts> {
                         fontSize: 20),
                   ),
                   Text(
-                    "Step:3  Entering Description about product",
+                    "Step:3  Enter  Description ",
                     style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -421,7 +421,7 @@ class _AddProductsState extends State<AddProducts> {
   }
 
   void upload(String filename) {
-    http.post("http://10.0.2.2/KapraCartScript/uploadImage.php",
+    http.post(basicUrl + "uploadImage.php",
         body: {"image": base64Image, "name": filename}).then((value) {
       setstatus(value.statusCode == 200 ? value.body : errormessage);
     }).catchError((error) {

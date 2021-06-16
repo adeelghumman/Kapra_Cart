@@ -6,6 +6,7 @@ import 'package:kapra_cart/Constants/theme.dart';
 import 'package:kapra_cart/ModelClasses/buyerModelClass.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/oderModelClass.dart';
+import 'package:kapra_cart/ShopKeeperDashboard/itemDetailScreen.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customWidgets/title_text.dart';
 import 'package:kapra_cart/data/data.dart';
@@ -261,21 +262,92 @@ class _OderDetailsScreenShopkeeperState
                 _description(),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
-                  child: Container(
-                    width: 300,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: buttonColor,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Center(
-                      child: Text("View item details",
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ItemDetailScren(
+                              orderDetails: widget.orderDetails,
+                            ),
+                          ));
+                    },
+                    child: Container(
+                      width: 300,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: buttonColor,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Center(
+                        child: Text("View item details",
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )),
+                      ),
                     ),
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          updateStatus(
+                            "1",
+                            widget.orderDetails.orderId,
+                          );
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2 - 30,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: buttonColor,
+                              borderRadius: BorderRadius.circular(50)),
+                          child: Center(
+                            child: Text("Completed ",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                )),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          updateStatus(
+                            "0",
+                            widget.orderDetails.orderId,
+                          );
+
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2 - 30,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: buttonColor,
+                              borderRadius: BorderRadius.circular(50)),
+                          child: Center(
+                            child: Text("Incomplete",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                )),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),
@@ -413,5 +485,10 @@ class _OderDetailsScreenShopkeeperState
         ),
       ),
     );
+  }
+
+  void updateStatus(status, orderId) async {
+    var response = await http.post(basicUrl + "updateServiceOrderStatus.php",
+        body: {"status": status, "orderId": orderId});
   }
 }

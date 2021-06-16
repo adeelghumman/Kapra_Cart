@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:clay_containers/constants.dart';
 import 'package:clay_containers/widgets/clay_container.dart';
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/BuyerDashboard/notificationScreen.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/shopDetailsModelClass.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/addProducts.dart';
@@ -47,9 +48,21 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      widget.shopkeeperDetails.name.toString().toUpperCase(),
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        widget.shopkeeperDetails.name.toString().toUpperCase(),
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: Image.network(
+                        basicUrl + "${widget.shopkeeperDetails.image}",
+                        height: 80,
+                        width: 80,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                     Text(
                       widget.shopkeeperDetails.email,
@@ -58,27 +71,44 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                   ],
                 ),
               ),
-              color: buttonColor,
+              color: Colors.blue[200],
               height: MediaQuery.of(context).size.height / 4,
               width: MediaQuery.of(context).size.height,
             ),
             SizedBox(
               height: 2,
             ),
+            // ListTile(
+            //   trailing: Icon(Icons.verified_user, color: Colors.white),
+            //   tileColor: Colors.blue[300],
+            //   leading: Text(
+            //     "Profile",
+            //     style: TextStyle(fontSize: 20, color: Colors.white),
+            //   ),
+            //   onTap: () {
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => ProfileScreen(
+            //             shopkeeperDetails: widget.shopkeeperDetails,
+            //             roleStatus: '2',
+            //           ),
+            //         ));
+            //   },
+            // ),
             ListTile(
               trailing: Icon(Icons.verified_user, color: Colors.white),
-              tileColor: appbarColor,
+              tileColor: Colors.blue[300],
               leading: Text(
-                "Profile",
+                "Notifications",
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProfileScreen(
-                        shopkeeperDetails: widget.shopkeeperDetails,
-                        roleStatus: '2',
+                      builder: (context) => Notifications(
+                        comingStatus: 2,
                       ),
                     ));
               },
@@ -87,7 +117,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
               height: 2,
             ),
             ListTile(
-              tileColor: appbarColor,
+              tileColor: Colors.blue[400],
               leading: Text(
                 "Sign out",
                 style: TextStyle(fontSize: 20, color: Colors.white),

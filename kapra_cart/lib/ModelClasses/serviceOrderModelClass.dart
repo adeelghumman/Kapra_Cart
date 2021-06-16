@@ -8,14 +8,14 @@ String servicesOrderDetailsToJson(List<ServicesOrderDetails> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ServicesOrderDetails {
-  ServicesOrderDetails({
-    this.seOrderId,
-    this.buyerId,
-    this.tailorShopId,
-    this.seId,
-    this.measurements,
-    this.seDiscription,
-  });
+  ServicesOrderDetails(
+      {this.seOrderId,
+      this.buyerId,
+      this.tailorShopId,
+      this.seId,
+      this.measurements,
+      this.seDiscription,
+      this.completed});
 
   String seOrderId;
   String buyerId;
@@ -23,16 +23,17 @@ class ServicesOrderDetails {
   String seId;
   String measurements;
   String seDiscription;
+  String completed;
 
   factory ServicesOrderDetails.fromJson(Map<String, dynamic> json) =>
       ServicesOrderDetails(
-        seOrderId: json["se_orderId"],
-        buyerId: json["buyerId"],
-        tailorShopId: json["tailorShopId"],
-        seId: json["se_id"],
-        measurements: json["measurements"],
-        seDiscription: json["se_discription"],
-      );
+          seOrderId: json["se_orderId"],
+          buyerId: json["buyerId"],
+          tailorShopId: json["tailorShopId"],
+          seId: json["se_id"],
+          measurements: json["measurements"],
+          seDiscription: json["se_discription"],
+          completed: json["completed"]);
 
   Map<String, dynamic> toJson() => {
         "se_orderId": seOrderId,
@@ -41,5 +42,6 @@ class ServicesOrderDetails {
         "se_id": seId,
         "measurements": measurements,
         "se_discription": seDiscription,
+        "completed": completed
       };
 }

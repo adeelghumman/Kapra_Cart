@@ -416,6 +416,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
       'se_id': widget.serviceDetails.seId.toString(),
       'measurements': measurements,
       'discription': description.text,
+      'completed': "0"
     });
 
     print(response.body);

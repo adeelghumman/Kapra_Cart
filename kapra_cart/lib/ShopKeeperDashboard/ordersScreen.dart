@@ -39,40 +39,45 @@ class _OrdersScrrenState extends State<OrdersScrren> {
       child: Center(
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              clayContainer(
-                borderRadius: 75,
-                color: Colors.white,
-                height: 130,
-                width: 130,
-                child: Center(
-                    child: Text(
-                  "Orders",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                )),
-              ),
-              Container(
-                child: FutureBuilder(
-                  future: fetchAllOrders(widget.shopId),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        itemCount: snapshot.data.length,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, index) {
-                          OrderDetails orderDetails = snapshot.data[index];
-
-                          return allOrders(orderDetails, index + 1);
-                        },
-                      );
-                    }
-                    return CircularProgressIndicator();
-                  },
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                clayContainer(
+                  borderRadius: 75,
+                  color: Colors.white,
+                  height: 130,
+                  width: 130,
+                  child: Center(
+                      child: Text(
+                    "Orders",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  )),
                 ),
-              )
-            ],
+                SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Container(
+                    child: FutureBuilder(
+                      future: fetchAllOrders(widget.shopId),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, index) {
+                              OrderDetails orderDetails = snapshot.data[index];
+
+                              return allOrders(orderDetails, index + 1);
+                            },
+                          );
+                        }
+                        return CircularProgressIndicator();
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -92,7 +97,7 @@ class _OrdersScrrenState extends State<OrdersScrren> {
                 SnackBar(content: Text("Loading Order Details...")));
             CircularProgressIndicator();
             Timer(Duration(seconds: 2), () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => OderDetailsScreenShopkeeper(
@@ -107,7 +112,9 @@ class _OrdersScrrenState extends State<OrdersScrren> {
             width: MediaQuery.of(context).size.width,
             height: 130,
             decoration: BoxDecoration(
-                color: Colors.green[400],
+                color: orderDetails.completed == "0"
+                    ? Colors.red[400]
+                    : Colors.green[400],
                 borderRadius: BorderRadius.circular(30)),
             child: Row(
               children: [
@@ -156,43 +163,46 @@ class _OrdersScrrenState extends State<OrdersScrren> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Total Bill ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 23,
-                                    letterSpacing: 2),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width / 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Total Bill ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 23,
+                                      letterSpacing: 2),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                "PKR  " + orderDetails.productsBill,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 19,
-                                    letterSpacing: 2),
+                              Expanded(
+                                child: Text(
+                                  "PKR  " + orderDetails.productsBill,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 19,
+                                      letterSpacing: 2),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    "Delivery in 7 days",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: buttonColor,
-                                        letterSpacing: 2),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "Delivery in 7 days",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: buttonColor,
+                                          letterSpacing: 2),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       )
                     ],

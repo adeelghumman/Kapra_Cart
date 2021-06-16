@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/BuyerDashboard/notificationScreen.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ShopKeeperDashboard/profileScreen.dart';
 import 'package:kapra_cart/constant.dart';
@@ -25,12 +26,14 @@ class _customDrawerState extends State<customDrawer> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                      color: appbarColor,
-                      borderRadius: BorderRadius.circular(50)),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(40),
+                  child: Image.network(
+                    basicUrl + "${widget.userDetails.image}",
+                    height: 80,
+                    width: 80,
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -61,7 +64,18 @@ class _customDrawerState extends State<customDrawer> {
                   ));
             },
             leading: Text("Profile"),
-            trailing: Icon(Icons.supervised_user_circle),
+            trailing: Icon(Icons.accessibility_new),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Notifications(),
+                  ));
+            },
+            leading: Text("Notifications"),
+            trailing: Icon(Icons.notification_important),
           ),
           ListTile(
             onTap: () {

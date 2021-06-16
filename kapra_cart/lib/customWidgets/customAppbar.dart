@@ -25,6 +25,7 @@ class _customAppbarState extends State<customAppbar> {
       child: Padding(
         padding: const EdgeInsets.only(top: 30, left: 10, right: 10, bottom: 5),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
               onTap: () {
@@ -40,37 +41,6 @@ class _customAppbarState extends State<customAppbar> {
                   Icons.menu,
                   color: Colors.white,
                 ),
-              ),
-            ),
-            Expanded(
-                child: Container(
-              margin: EdgeInsets.only(left: 8, right: 8),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 2, color: buttonColor)),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
-                  style: TextStyle(color: Colors.white),
-                  enabled: true,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      fillColor: Colors.grey,
-                      hintText: "Search",
-                      hintStyle: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w300)),
-                ),
-              ),
-            )),
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(10)),
-              child: Icon(
-                Icons.add_shopping_cart,
-                color: Colors.white,
               ),
             ),
           ],

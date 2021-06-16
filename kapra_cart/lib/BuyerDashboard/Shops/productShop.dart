@@ -16,13 +16,15 @@ import 'backgroundCurveLayout.dart';
 
 class productShop extends StatefulWidget {
   loginUserModelClass userDetails;
-  productShop({this.userDetails});
+  final int servicer;
+  productShop({this.userDetails, this.servicer});
   @override
   _productShopState createState() => _productShopState();
 }
 
 class _productShopState extends State<productShop> {
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -55,12 +57,17 @@ class _productShopState extends State<productShop> {
         children: [
           Padding(
               padding: EdgeInsets.only(left: 14, bottom: 10),
-              child: Text(
-                'Browse Shops',
-                style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+              child: GestureDetector(
+                onTap: () {
+                  print(widget.servicer);
+                },
+                child: Text(
+                  'Browse Shops',
+                  style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
               )),
           Container(
             height: 20.0,
@@ -154,6 +161,7 @@ class _productShopState extends State<productShop> {
                 builder: (context) => ShopsHomepage_forBuyer(
                   shopDetails: shopDetails,
                   userDetails: widget.userDetails,
+                  servicer: widget.servicer,
                 ),
               ));
         },

@@ -201,12 +201,15 @@ class _serviceShopsState extends State<serviceShops> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
-                        child: Text(shopDetails.tsName.toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                            )),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width / 3 + 70,
+                          child: Text(shopDetails.tsName.toUpperCase(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
                       ),
                       Container(
                         height: 10.0,
@@ -215,11 +218,14 @@ class _serviceShopsState extends State<serviceShops> {
                         padding: const EdgeInsets.only(left: 30.0),
                         child: Row(
                           children: [
-                            Text(shopDetails.tsDescription,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                )),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Text(shopDetails.tsDescription,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                  )),
+                            ),
                             Container(
                               width: 20.0,
                             ),

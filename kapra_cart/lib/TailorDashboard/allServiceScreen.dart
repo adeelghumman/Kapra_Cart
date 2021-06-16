@@ -91,7 +91,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(40),
                   child: Image.network(
-                    "http://192.168.18.13/kapraCartScript/${services.seImage}",
+                    basicUrl + "${services.seImage}",
                     height: 100,
                     width: 100,
                     fit: BoxFit.fill,
@@ -103,12 +103,15 @@ class _ServicesScreenState extends State<ServicesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      services.seName,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                          letterSpacing: 2),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2 + 20,
+                      child: Text(
+                        services.seName,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            letterSpacing: 2),
+                      ),
                     ),
                     Flexible(
                       child: Text(
@@ -118,38 +121,20 @@ class _ServicesScreenState extends State<ServicesScreen> {
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ),
+                    Column(
+                      children: [
+                        Text(
+                          "Pkr " + services.sePrice,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23,
+                              letterSpacing: 2),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "PKR ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 23,
-                                letterSpacing: 2),
-                          ),
-                          Text(
-                            services.sePrice,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 23,
-                                letterSpacing: 2),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
             ],
           ),
         ),

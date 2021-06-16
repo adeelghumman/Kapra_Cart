@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:kapra_cart/BuyerDashboard/notificationScreen.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/ModelClasses/tailorShopDetailsModelClass.dart';
 import 'package:kapra_cart/TailorDashboard/allServiceScreen.dart';
@@ -55,6 +56,15 @@ class _TailorHomePageState extends State<TailorHomePage> {
                               fontSize: 20,
                               color: Colors.white),
                         ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: Image.network(
+                            basicUrl + "${widget.tailordetails.image}",
+                            height: 80,
+                            width: 80,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                         Text(
                           widget.tailordetails.email,
                           style: TextStyle(
@@ -65,7 +75,7 @@ class _TailorHomePageState extends State<TailorHomePage> {
                       ],
                     ),
                   ),
-                  color: Colors.blue,
+                  color: Colors.brown[200],
                   height: MediaQuery.of(context).size.height / 4,
                   width: MediaQuery.of(context).size.height,
                 ),
@@ -74,26 +84,26 @@ class _TailorHomePageState extends State<TailorHomePage> {
                 ),
                 ListTile(
                   trailing: Icon(Icons.verified_user, color: Colors.white),
-                  tileColor: Colors.blue,
+                  tileColor: Colors.brown[300],
                   leading: Text(
-                    "Profile",
+                    "Notifications",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => ProfileScreenShopkeeper(
-                    //         shopkeeperDetails: widget.shopkeeperDetails,
-                    //       ),
-                    //     ));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Notifications(
+                            comingStatus: 3,
+                          ),
+                        ));
                   },
                 ),
                 SizedBox(
                   height: 2,
                 ),
                 ListTile(
-                  tileColor: appbarColor,
+                  tileColor: Colors.brown[500],
                   leading: Text(
                     "Sign out",
                     style: TextStyle(fontSize: 20, color: Colors.white),

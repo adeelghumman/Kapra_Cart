@@ -15,8 +15,10 @@ import '../productDetailsPage.dart';
 class ShopsHomepage_forBuyer extends StatefulWidget {
   final ShopDetails shopDetails;
   final loginUserModelClass userDetails;
+  final int servicer;
 
-  const ShopsHomepage_forBuyer({Key key, this.shopDetails, this.userDetails})
+  const ShopsHomepage_forBuyer(
+      {Key key, this.shopDetails, this.userDetails, this.servicer})
       : super(key: key);
 
   @override
@@ -38,10 +40,10 @@ class _ShopsHomepage_forBuyerState extends State<ShopsHomepage_forBuyer> {
               context,
               MaterialPageRoute(
                 builder: (context) => CartScreen(
-                  cart: cart,
-                  shopDetails: widget.shopDetails,
-                  userDetails: widget.userDetails,
-                ),
+                    cart: cart,
+                    shopDetails: widget.shopDetails,
+                    userDetails: widget.userDetails,
+                    servicer: widget.servicer),
               ));
         },
         backgroundColor: LightColor.orange,

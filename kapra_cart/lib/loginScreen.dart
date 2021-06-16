@@ -170,7 +170,7 @@ class _loginScreenState extends State<loginScreen> {
       constants.sharedPreferences.setString('password', user.password);
 
       if (tablename == "buyer") {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => buyerHomePage(userDetails: user),
@@ -185,7 +185,7 @@ class _loginScreenState extends State<loginScreen> {
       constants.sharedPreferences.setString('password', user.password);
 
       if (tablename == "shopkeeper") {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => ShopkeeperHomePage(
@@ -200,7 +200,7 @@ class _loginScreenState extends State<loginScreen> {
       constants.sharedPreferences.setString('password', user.password);
 
       if (tablename == "tailor") {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => TailorHomePage(

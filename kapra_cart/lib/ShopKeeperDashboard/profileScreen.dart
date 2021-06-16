@@ -3,6 +3,8 @@ import 'package:kapra_cart/BuyerDashboard/measurementScreen.dart';
 import 'package:kapra_cart/ModelClasses/loginUserModelClass.dart';
 import 'package:kapra_cart/constant.dart';
 import 'package:kapra_cart/customWidgets/customButton.dart';
+import 'package:http/http.dart' as http;
+import 'package:kapra_cart/roleOptScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final loginUserModelClass shopkeeperDetails;
@@ -15,6 +17,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  TextEditingController name = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController address = TextEditingController();
+
   int edit = 0;
   @override
   Widget build(BuildContext context) {
@@ -24,14 +30,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   layout() {
-    return Column(
-      children: [
-        toplayout(),
-        SizedBox(
-          height: 20,
-        ),
-        midlayout(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          toplayout(),
+          SizedBox(
+            height: 20,
+          ),
+          midlayout(),
+        ],
+      ),
     );
   }
 
@@ -41,12 +49,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(40), bottomLeft: Radius.circular(40)),
+            borderRadius: BorderRadius.circular(40),
             child: Image.network(
-              "https://cdn.shopify.com/s/files/1/0070/7032/files/trending-products_c8d0d15c-9afc-47e3-9ba2-f7bad0505b9b.png?format=jpg&quality=90&v=1614559651&width=1024",
-              height: 100,
-              width: 100,
+              basicUrl + "${widget.shopkeeperDetails.image}",
+              height: 80,
+              width: 80,
               fit: BoxFit.fill,
             ),
           ),
@@ -98,6 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     : Padding(
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFeild(
+                          controller: name,
                           name: "Name",
                           hintText: "Name",
                         ),
@@ -120,6 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     : Padding(
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFeild(
+                          controller: phone,
                           name: "Phone",
                           hintText: "Phone",
                         ),
@@ -142,8 +151,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     : Padding(
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFeild(
-                          name: "Name",
-                          hintText: "Name",
+                          controller: address,
+                          name: "Address",
+                          hintText: "Address",
                         ),
                       ),
                 endlayout()
@@ -167,9 +177,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                setState(() {
-                  edit = 1;
-                });
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Warnig'),
+                      content: Text("Automatically Logout after Logout"),
+                      actions: [
+                        FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              setState(() {
+                                edit = 1;
+                              });
+                            },
+                            child: Text("Yes")),
+                        FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("No")),
+                      ],
+                    );
+                  },
+                );
               },
               child: Container(
                 width: MediaQuery.of(context).size.width / 4,
@@ -191,6 +222,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             child: GestureDetector(
               onTap: () {
+                updateBuyer(
+                  widget.shopkeeperDetails.id,
+                );
+                constants.sharedPreferences.clear();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => roleOptScreen(),
+                    ));
+
                 setState(() {
                   edit = 0;
                 });
@@ -217,7 +258,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  midlayoutEdit() {
-    return Container();
+  void updateBuyer(id) async {
+    var response =
+        await http.post(basicUrl + "updateBuyerProfileDetails.php", body: {
+      "buyerId": id,
+      "name": name.text.toString(),
+      "phone": phone.text.toString(),
+      "address": address.text.toString()
+    });
+    print(response.body);
   }
 }

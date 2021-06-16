@@ -16,6 +16,7 @@ import 'package:kapra_cart/customWidgets/title_text.dart';
 import 'package:http/http.dart' as http;
 
 import '../constant.dart';
+import 'Shops/serviceShops.dart';
 import 'cart.dart';
 
 class CartScreen extends StatefulWidget {
@@ -23,13 +24,15 @@ class CartScreen extends StatefulWidget {
   final ShopDetails shopDetails;
   final Cart cart;
   final loginUserModelClass userDetails;
+  final int servicer;
 
   const CartScreen(
       {Key key,
       this.cartItemsIds,
       this.shopDetails,
       this.cart,
-      this.userDetails})
+      this.userDetails,
+      this.servicer})
       : super(key: key);
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -231,13 +234,25 @@ class _CartScreenState extends State<CartScreen> {
               SnackBar(content: Text("Order Placed successfully")));
 
           Timer(Duration(seconds: 3), () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChoiceMaking(
+            if (widget.servicer == 1) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => serviceShops(
                       userDetails: widget.userDetails,
-                      lastProductOrderPlcedId: a),
-                ));
+                      availBothService: 1,
+                      lastProductOrderPlcedId: a,
+                    ),
+                  ));
+            } else {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChoiceMaking(
+                        userDetails: widget.userDetails,
+                        lastProductOrderPlcedId: a),
+                  ));
+            }
           });
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

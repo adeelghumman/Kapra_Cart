@@ -242,7 +242,7 @@ class _AddServiceState extends State<AddService> {
                         fontSize: 20),
                   ),
                   Text(
-                    "Step:3  Entering Description about Service",
+                    "Step:3  Service Description",
                     style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -377,7 +377,7 @@ class _AddServiceState extends State<AddService> {
   }
 
   void upload(String filename) {
-    http.post("http://10.0.2.2/KapraCartScript/uploadImage.php",
+    http.post(basicUrl + "uploadImage.php",
         body: {"image": base64Image, "name": filename}).then((value) {
       setstatus(value.statusCode == 200 ? value.body : errormessage);
     }).catchError((error) {

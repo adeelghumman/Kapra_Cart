@@ -376,11 +376,83 @@ class _OderDetailsScreenTailorState extends State<OderDetailsScreenTailor>
         ),
         Center(child: Text(widget.buyer.address.toString())),
         SizedBox(height: 20),
-        TitleText(
-          text: "Pyment Method",
-          fontSize: 14,
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Container(
+            width: 300,
+            height: 50,
+            decoration: BoxDecoration(
+                color: Colors.brown[300],
+                borderRadius: BorderRadius.circular(50)),
+            child: Center(
+              child: Text("View item details",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  )),
+            ),
+          ),
         ),
-        Center(child: Text(widget.toString())),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: GestureDetector(
+                onTap: () {
+                  updateStatus(
+                    "1",
+                    widget.servicesOrderDetails.seOrderId,
+                  );
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2 - 30,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.brown,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Center(
+                    child: Text("Completed ",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: GestureDetector(
+                onTap: () {
+                  updateStatus(
+                    "0",
+                    widget.servicesOrderDetails.seOrderId,
+                  );
+
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2 - 30,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.brown,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Center(
+                    child: Text("Incomplete",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
@@ -414,5 +486,10 @@ class _OderDetailsScreenTailorState extends State<OderDetailsScreenTailor>
         ),
       ),
     );
+  }
+
+  void updateStatus(status, seorderId) async {
+    var response = await http.post(basicUrl + "updateServiceOrderStatus.php",
+        body: {"status": status, "se_orderId": seorderId});
   }
 }

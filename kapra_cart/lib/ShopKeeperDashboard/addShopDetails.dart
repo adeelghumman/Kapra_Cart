@@ -125,42 +125,6 @@ class _AddShopDetailsState extends State<AddShopDetails> {
           ],
         ),
         allFeilds(),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Radio(
-                      value: "Boutique",
-                      groupValue: shopType,
-                      onChanged: (value) {
-                        setShopType(value);
-                      }),
-                  Text(
-                    "Boutique",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Radio(
-                      value: "Tailor",
-                      groupValue: shopType,
-                      onChanged: (value) {
-                        setShopType(value);
-                      }),
-                  Text(
-                    "Tailor",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-            ],
-          ),
-        )
       ],
     );
   }
@@ -350,7 +314,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
       'address': address.text,
       'phone': phone.text,
       'city': city.text,
-      'category': shopType,
+      'category': "Boutique",
       'image': tempFile.path.split("/").last,
       'description': description.text,
       'sk_id': sk_id,
@@ -430,7 +394,7 @@ class _AddShopDetailsState extends State<AddShopDetails> {
   }
 
   void upload(String filename) {
-    http.post("http://10.0.2.2/KapraCartScript/uploadImage.php",
+    http.post((basicUrl + "uploadImage.php"),
         body: {"image": base64Image, "name": filename}).then((value) {
       setstatus(value.statusCode == 200 ? value.body : errormessage);
     }).catchError((error) {

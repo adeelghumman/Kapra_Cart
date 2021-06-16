@@ -22,7 +22,7 @@ class OrderDetails {
   String productsBill;
   String productIds;
   String paymentMethod;
-  int completed;
+  String completed;
 
   factory OrderDetails.fromJson(Map<String, dynamic> json) => OrderDetails(
       orderId: json["orderId"],
